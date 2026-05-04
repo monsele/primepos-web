@@ -1,0 +1,105 @@
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { useAuth } from '../../contexts/useAuth'
+import { login as loginApi } from '../../api/auth'
+import type { LoginRequest } from '../../types/auth'
+
+interface UseLoginReturn {
+  staffId: string
+  password: string
+  showPassword: boolean
+  errors: {
+    staffId?: string
+    password?: string
+  }
+  isSubmitting: boolean
+  shake: boolean
+  setStaffId: (value: string) => void
+  setPassword: (value: string) => void
+  togglePassword: () => void
+  handleSubmit: () => Promise<void>
+}
+
+export function useLogin(): UseLoginReturn {
+  const { startLogin, login, setError } = useAuth()
+  const [staffId, setStaffId] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [errors, setErrors] = useState<{ staffId?: string; password?: string }>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [shake, setShake] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
+  const togglePassword = useCallback(() => {
+    setShowPassword((prev) => !prev)
+  }, [])
+
+  const validate = useCallback((): boolean => {
+    const newErrors: { staffId?: string; password?: string } = {}
+    if (!staffId.trim()) {
+      newErrors.staffId = 'Required'
+    }
+    if (!password.trim()) {
+      newErrors.password = 'Required'
+    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }, [staffId, password])
+
+  const handleSubmit = useCallback(async () => {
+    setShake(false)
+    setErrors({})
+
+    if (!validate()) {
+      return
+    }
+
+    setIsSubmitting(true)
+    startLogin()
+
+    try {
+      const credentials: LoginRequest = { staffId: staffId.trim(), password }
+      const response = await loginApi(credentials)
+      if (isMountedRef.current) {
+        login(response.user, response.accessToken)
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        const message = err instanceof Error ? err.message : 'Invalid credentials. Please try again.'
+        setError(message)
+        setShake(true)
+        timeoutRef.current = setTimeout(() => {
+          if (isMountedRef.current) {
+            setShake(false)
+          }
+        }, 500)
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setIsSubmitting(false)
+      }
+    }
+  }, [staffId, password, validate, startLogin, login, setError])
+
+  return {
+    staffId,
+    password,
+    showPassword,
+    errors,
+    isSubmitting,
+    shake,
+    setStaffId,
+    setPassword,
+    togglePassword,
+    handleSubmit,
+  }
+}

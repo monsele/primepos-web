@@ -1,0 +1,142 @@
+Number of pages: 28
+
+--- Page 1 ---
+Login → Dashboard → Side Menu → Cash Transactions (Cash In, Cash Out, New Account 
+Deposit, Batch BBLS Deposit) → Customer Services (Loan Inquiry, Account Balance, 
+Account Statement, New Savings Account) → Loan Repayment → Group Loan Repayment → 
+Reports → Settings → Offline Data 
+ 
+14 navigable screens: 
+Login — Staff ID + Password with show/hide toggle, sign in button with your brand color. 
+Cash Transactions tab — Cash In (with Account Name + Book Balance + Usable Balance 
+appearing after search), Cash Out, New Account Deposit/Posting (First Name, Surname, 
+Gender, BVN, Product 1 & 2 with payments), Batch BBLS Deposit (Payee Name, Select 
+Branch, Select Group modal with search, Group Code, Group Name, Total, customer-
+amount table, Send SMS checkbox), and Card Transactions. 
+Services tab — cleanly sectioned into Inquiries (Loan Inquiry, Account Balance, Account 
+Statement), Account Opening (New Savings — 3 steps), and Repayments (Loan Repayment 
+with full loan details, Group Loan Repayment with group selector modal). 
+Reports tab — Loans Booked, E-Ledger, LO PAR, Transaction Reports, LO Performance. 
+Menu/More tab — Officer card, Offline Data (Unposted Transactions with actual list, 
+Better Life Records, Loan Portfolio, Offline Groups, Loan Records), Settings, and Sign Out 
+which returns to the Login screen. 
+
+
+--- Page 2 ---
+[No text found - likely image-based page]
+
+--- Page 3 ---
+ 
+Cash-in (from dashboard) 
+
+
+--- Page 4 ---
+ 
+If you enter account number and search it fetches the customer detail 
+
+
+--- Page 5 ---
+[No text found - likely image-based page]
+
+--- Page 6 ---
+Cashout  
+ 
+ 
+
+
+--- Page 7 ---
+ 
+Loan Repayment  
+
+
+--- Page 8 ---
+[No text found - likely image-based page]
+
+--- Page 9 ---
+ 
+ 
+New saving account 
+
+
+--- Page 10 ---
+[No text found - likely image-based page]
+
+--- Page 11 ---
+[No text found - likely image-based page]
+
+--- Page 12 ---
+[No text found - likely image-based page]
+
+--- Page 13 ---
+ 
+ 
+Transact 
+
+
+--- Page 14 ---
+ 
+BBLS DEPOSIT 
+
+
+--- Page 15 ---
+[No text found - likely image-based page]
+
+--- Page 16 ---
+[No text found - likely image-based page]
+
+--- Page 17 ---
+[No text found - likely image-based page]
+
+--- Page 18 ---
+ 
+ 
+Service 
+
+
+--- Page 19 ---
+ 
+Loan inquiry 
+ 
+
+
+--- Page 20 ---
+[No text found - likely image-based page]
+
+--- Page 21 ---
+ 
+ 
+Balance inquiry 
+
+
+--- Page 22 ---
+[No text found - likely image-based page]
+
+--- Page 23 ---
+Account statement 
+ 
+Report 
+
+
+--- Page 24 ---
+ 
+More-Offline Data 
+
+
+--- Page 25 ---
+[No text found - likely image-based page]
+
+--- Page 26 ---
+ 
+ 
+Profile 
+
+
+--- Page 27 ---
+ 
+ 
+Unposted transaction 
+
+
+--- Page 28 ---
+[No text found - likely image-based page]
+
