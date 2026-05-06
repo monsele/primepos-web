@@ -42,26 +42,6 @@ export function PullToRefresh({
     [isRefreshing]
   )
 
-  const handleTouchEnd = useCallback(() => {
-    if (startYRef.current === null) return
-
-    const container = containerRef.current
-    if (!container) {
-      startYRef.current = null
-      setIndicatorVisible(false)
-      return
-    }
-
-    // We can't reliably get the final touch position from the event here
-    // because touchend doesn't have touches. We estimate based on scroll
-    // position or use a simpler heuristic: if the user pulled down
-    // and we showed the indicator, we check if they've scrolled past threshold.
-    // For simplicity, we'll track last touch position in a ref.
-
-    startYRef.current = null
-    setIndicatorVisible(false)
-  }, [])
-
   // Track last known touch position to determine threshold on touchend
   const lastYRef = useRef<number | null>(null)
 

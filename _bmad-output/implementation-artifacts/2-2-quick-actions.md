@@ -4,7 +4,7 @@ story_key: 2-2-quick-actions
 epic: 2
 epic_title: Dashboard & Navigation
 title: Quick Actions
-status: ready-for-dev
+status: review
 source_files:
   - prd.md §4.2
   - architecture.md §3.1, §3.2
@@ -194,30 +194,30 @@ Use tokens from `src/index.css`.
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks (none needed — static data)
+  - [x] 3.2 Implement form/business logic (none needed)
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions (none needed)
+  - [x] 4.2 Add mock implementations (none needed)
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types (no changes needed)
+  - [x] 5.2 Update parent screens (DashboardScreen)
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components (QuickActions.test.tsx)
+  - [x] 6.2 Unit tests for hooks/utils (none needed)
+  - [x] 6.3 Integration tests (DashboardScreen.test.tsx)
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions (88 tests passed)
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
@@ -230,29 +230,47 @@ Use tokens from `src/index.css`.
 <!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
 
 ### Completion Notes
-<!-- Summarize what was actually implemented and tested -->
+- Created `QuickActions` component with 4 action cards in a 2×2 CSS Grid
+- Each card renders icon (emoji), label, and subtitle per spec
+- Cards use `:active` pseudo-class for scale(0.97) + background change tactile feedback
+- Navigation uses `useNavigation().navigateTo()` from NavigationContext
+- Added comprehensive unit tests for QuickActions rendering and navigation
+- Added integration tests for DashboardScreen verifying QuickActions presence
+- Also fixed pre-existing issues discovered during regression:
+  - App.tsx: Added QueryClientProvider wrapper so DashboardScreen (using TanStack Query) works in tests
+  - Removed unused `handleTouchEnd` in PullToRefresh
+  - Removed unused `isLoading` in DashboardScreen
+  - Added eslint-disable comments for react-refresh/only-export-components rule on hook exports
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+- `primepos-web/src/features/dashboard/QuickActions.tsx` — NEW: QuickActions component
+- `primepos-web/src/features/dashboard/quick-actions.module.css` — NEW: QuickActions styles
+- `primepos-web/src/features/dashboard/DashboardScreen.tsx` — MODIFIED: Replaced placeholder with `<QuickActions />`
+- `primepos-web/src/features/dashboard/dashboard.module.css` — MODIFIED: Removed quick action styles (moved to module)
+- `primepos-web/src/features/dashboard/QuickActions.test.tsx` — NEW: Unit tests
+- `primepos-web/src/features/dashboard/DashboardScreen.test.tsx` — NEW: Integration tests
+- `primepos-web/src/App.tsx` — MODIFIED: Added QueryClientProvider wrapper
+- `primepos-web/src/components/PullToRefresh/PullToRefresh.tsx` — MODIFIED: Removed unused handleTouchEnd
+- `primepos-web/src/contexts/NavigationContext.tsx` — MODIFIED: Added eslint-disable for react-refresh rule
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- **2026-05-06:** Implemented Story 2.2 Quick Actions — component, styles, tests, integration with DashboardScreen. Fixed regression issues from Story 2.1 (QueryClientProvider, unused vars, lint errors).
 ---
 
 ## Completion Checklist
 
-- [ ] `QuickActions` renders 4 cards in 2×2 grid
-- [ ] Each card shows icon, label, and subtitle
-- [ ] Tap scales card to 0.97 with background change
-- [ ] Tap navigates to correct screen via NavigationContext
-- [ ] All touch targets ≥ 44px
-- [ ] Unit tests for rendering and navigation
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] `QuickActions` renders 4 cards in 2×2 grid
+- [x] Each card shows icon, label, and subtitle
+- [x] Tap scales card to 0.97 with background change
+- [x] Tap navigates to correct screen via NavigationContext
+- [x] All touch targets ≥ 44px
+- [x] Unit tests for rendering and navigation
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 

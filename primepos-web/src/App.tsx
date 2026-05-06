@@ -4,6 +4,7 @@ import { SyncProvider } from './contexts/SyncContext'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import { ToastProvider } from './components/Toast/ToastProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
@@ -105,16 +106,27 @@ function AppContent() {
 }
 
 function App() {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000,
+        retry: 1,
+      },
+    },
+  }))
+
   return (
-    <AuthProvider>
-      <SyncProvider>
-        <NavigationProvider>
-          <ToastProvider>
-            <AppContent />
-          </ToastProvider>
-        </NavigationProvider>
-      </SyncProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SyncProvider>
+          <NavigationProvider>
+            <ToastProvider>
+              <AppContent />
+            </ToastProvider>
+          </NavigationProvider>
+        </SyncProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 

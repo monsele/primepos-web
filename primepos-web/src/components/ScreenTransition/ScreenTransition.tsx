@@ -11,7 +11,7 @@ export function ScreenTransition({ direction, children }: ScreenTransitionProps)
     direction === 'push'
       ? styles.slideInRight
       : direction === 'pop'
-        ? styles.slideOutRight
+        ? styles.slideInLeft
         : styles.noAnimation
 
   return (

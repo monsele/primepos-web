@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import OfflineIndicator from '../../components/OfflineIndicator'
 import { ConnectionBanner } from '../../components/ConnectionBanner/ConnectionBanner'
 import { KPICards } from './KPICards'
+import { QuickActions } from './QuickActions'
 import { useDashboardKPIs, useInvalidateDailySummary } from './useDashboardKPIs'
 import { PullToRefresh } from '../../components/PullToRefresh/PullToRefresh'
 import styles from './dashboard.module.css'
@@ -15,7 +16,7 @@ export function DashboardScreen() {
   const { isOnline } = useNetworkStatus()
   const { wentOffline, cameOnline } = useConnectionTransition()
   const { showToast } = useToast()
-  const { data, isLoading } = useDashboardKPIs()
+  const { data } = useDashboardKPIs()
   const invalidate = useInvalidateDailySummary()
 
   useEffect(() => {
@@ -60,27 +61,7 @@ export function DashboardScreen() {
           pendingSyncCount={kpiData.pendingSyncCount}
         />
 
-        <section className={styles.quickActions}>
-          <h3>Quick Actions</h3>
-          <div className={styles.actionsGrid}>
-            <button className={styles.actionCard} type="button">
-              <span className={styles.actionIcon}>↓</span>
-              <span className={styles.actionLabel}>Cash In</span>
-            </button>
-            <button className={styles.actionCard} type="button">
-              <span className={styles.actionIcon}>↑</span>
-              <span className={styles.actionLabel}>Cash Out</span>
-            </button>
-            <button className={styles.actionCard} type="button">
-              <span className={styles.actionIcon}>💰</span>
-              <span className={styles.actionLabel}>Loan Repay</span>
-            </button>
-            <button className={styles.actionCard} type="button">
-              <span className={styles.actionIcon}>✨</span>
-              <span className={styles.actionLabel}>New Account</span>
-            </button>
-          </div>
-        </section>
+        <QuickActions />
 
         <section className={styles.recentTransactions}>
           <h3>Recent Transactions</h3>
