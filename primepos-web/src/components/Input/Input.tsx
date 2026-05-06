@@ -11,6 +11,7 @@ export interface InputProps {
   disabled?: boolean
   autoComplete?: string
   id?: string
+  maxLength?: number
 }
 
 export default function Input({
@@ -23,6 +24,7 @@ export default function Input({
   disabled = false,
   autoComplete,
   id,
+  maxLength,
 }: InputProps) {
   const generatedId = useId()
   const inputId = id || generatedId
@@ -40,6 +42,7 @@ export default function Input({
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         className={`${styles.input} ${error ? styles.errorInput : ''}`}
         aria-invalid={error ? 'true' : 'false'}
         aria-describedby={error ? `${inputId}-error` : undefined}

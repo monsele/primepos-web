@@ -4,7 +4,7 @@ story_key: 3-1-cash-in-deposit
 epic: 3
 epic_title: Cash Transactions
 title: Cash In (Deposit)
-status: review
+status: done
 source_files:
   - prd.md §4.3.1
   - architecture.md §3.1, §5.2, §6.1

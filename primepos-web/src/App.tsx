@@ -9,6 +9,10 @@ import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
 import CashInScreen from './features/cash-in/CashInScreen'
+import CashOutScreen from './features/cash-out/CashOutScreen'
+import NewAccountDepositScreen from './features/new-account/NewAccountDepositScreen'
+import LoanRepaymentScreen from './features/loan-repayment/LoanRepaymentScreen'
+import TransactMenuScreen from './features/transact-menu/TransactMenuScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -42,7 +46,7 @@ const SCREEN_TITLES: Record<string, string> = {
   reports: 'Reports',
   more: 'More',
   cashIn: 'Cash In',
-  cashOut: 'Cash Out',
+  cashOut: 'Cash Out (Withdrawal)',
   loanRepayment: 'Loan Repayment',
   newAccount: 'New Account Deposit',
   batchDeposit: 'Batch BBLS Deposit',
@@ -76,6 +80,14 @@ function AppShell() {
         return <DashboardScreen />
       case 'cashIn':
         return <CashInScreen />
+      case 'cashOut':
+        return <CashOutScreen />
+      case 'newAccount':
+        return <NewAccountDepositScreen />
+      case 'loanRepayment':
+        return <LoanRepaymentScreen />
+      case 'transactMenu':
+        return <TransactMenuScreen />
       default:
         return (
           <PlaceholderContent

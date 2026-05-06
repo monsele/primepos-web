@@ -4,7 +4,7 @@ story_key: 2-2-quick-actions
 epic: 2
 epic_title: Dashboard & Navigation
 title: Quick Actions
-status: review
+status: done
 source_files:
   - prd.md §4.2
   - architecture.md §3.1, §3.2

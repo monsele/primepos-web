@@ -24,3 +24,11 @@
 
 - **React Query gcTime not configured** [useRecentTransactions.ts] — Pre-existing pattern across codebase (useDashboardKPIs also lacks it). Deferred until team decides on global caching strategy.
 - **Mock API omits date=today parameter** [useRecentTransactions.ts] — Temporary stub for MVP. Real API integration will add the date filter and limit params.
+
+## Deferred from: code review of 3-2-cash-out-withdrawal (2026-05-06)
+
+- **Account validation error swallowed by UI** [CashOutScreen.tsx] — Button is disabled when no account (same as Cash In pattern). Pre-existing pattern from Story 3.1.
+- **Hardcoded error message masks search failures** [CashOutScreen.tsx] — UI always renders "Account not found" regardless of actual error. Pre-existing Cash In pattern from Story 3.1.
+- **Stale account card and form data persist across searches** [CashOutScreen.tsx] — No reset on search input change. Pre-existing Cash In pattern from Story 3.1.
+- **Empty officerId silently accepted** [useCashOut.ts] — `user?.staffId || ''` falls back to empty string. Pre-existing Cash In pattern from Story 3.1.
+- **No keyboard accessibility for search** [CashOutScreen.tsx] — No Enter key handler on account input. Pre-existing Cash In pattern from Story 3.1.
