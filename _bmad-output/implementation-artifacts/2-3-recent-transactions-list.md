@@ -4,7 +4,7 @@ story_key: 2-3-recent-transactions-list
 epic: 2
 epic_title: Dashboard & Navigation
 title: Recent Transactions List
-status: ready-for-dev
+status: done
 source_files:
   - prd.md §4.2
   - architecture.md §3.1, §6.1
@@ -236,30 +236,47 @@ Use tokens from `src/index.css`.
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types
+  - [x] 5.2 Update parent screens
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils
+  - [x] 6.3 Integration tests
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
+
+### Review Findings
+
+- [x] [Review][Patch] **Transactions not capped at 5** [RecentTransactions.tsx] — Fixed: Added `.slice(0, 5)` to limit rendered items
+- [x] [Review][Patch] **Mock data not sorted by createdAt descending** [useRecentTransactions.ts] — Fixed: Added `.sort()` by `createdAt` descending
+- [x] [Review][Patch] **Missing error state handling** [DashboardScreen.tsx, RecentTransactions.tsx] — Fixed: Passed `error` from hook to component; added error UI with `role="alert"`
+- [x] [Review][Patch] **DashboardScreen test too shallow** [DashboardScreen.test.tsx] — Fixed: Added `staffId` to auth mock; test now waits for and verifies real transaction data renders
+- [x] [Review][Patch] **`|| []` fallback masks loading/error states** [DashboardScreen.tsx:69] — Fixed: Pass `undefined` directly; component handles with `?? []` internally
+- [x] [Review][Patch] **Avatar lacks `role="img"`** [Avatar.tsx:29] — Fixed: Added `role="img"`
+- [x] [Review][Patch] **Non-semantic list markup** [RecentTransactions.tsx] — Fixed: Replaced divs with `<ul role="list">` and `<li>`; added `.listItem` CSS
+- [x] [Review][Patch] **Loading/empty states lack ARIA semantics** [RecentTransactions.tsx] — Fixed: Added `aria-busy`, `role="status"`, `aria-live="polite"` to loading/empty states
+- [x] [Review][Patch] **StatusBadge silent fallback + null guard** [StatusBadge.tsx:5] — Fixed: Added null check; explicit variant mapping with `console.warn` for unknown statuses
+- [x] [Review][Patch] **formatTime no input validation** [date.ts:2] — Fixed: Added `isNaN(date.getTime())` check returning `'--:--'` with console warning
+- [x] [Review][Patch] **Avatar name/size guards** [Avatar.tsx:20, Avatar.tsx:25] — Fixed: Added `safeName` fallback to `'?'`; `safeSize` clamped to `Math.max(1, size)`
+- [x] [Review][Patch] **officerId whitespace-only enables query** [useRecentTransactions.ts:14] — Fixed: Changed `Boolean(officerId)` to `Boolean(officerId?.trim())`
+- [x] [Review][Defer] **React Query gcTime not configured** [useRecentTransactions.ts] — Pre-existing pattern across codebase (useDashboardKPIs also lacks it)
+- [x] [Review][Defer] **Mock API omits date=today parameter** [useRecentTransactions.ts] — Temporary stub for MVP; real API integration will add params
 
 ---
 
@@ -273,32 +290,61 @@ Use tokens from `src/index.css`.
 
 ### Completion Notes
 <!-- Summarize what was actually implemented and tested -->
+- Created `Transaction` type in `src/types/transaction.ts`
+- Built reusable `Avatar` component with name-hash color palette and initials generation
+- Built reusable `StatusBadge` component with POSTED/PENDING styles
+- Created `formatTime` utility for ISO → local "HH:MM AM/PM" formatting
+- Built `RecentTransactions` component with loading, empty, and populated states
+- Created `useRecentTransactions` TanStack Query hook with mock API returning 2 sample transactions
+- Wired `RecentTransactions` into `DashboardScreen` below QuickActions
+- Removed old static placeholder markup and styles from DashboardScreen/dashboard.module.css
+- Wrote 21 new tests: Avatar (4), StatusBadge (4), date utils (3), RecentTransactions (6), useRecentTransactions (3), DashboardScreen integration (1)
+- Full suite: 109 tests pass, zero regressions
+- Lint clean, build succeeds
 
 ---
 
 ## File List
 <!-- New, modified, and deleted files relative to repo root -->
+- `primepos-web/src/types/transaction.ts` (new)
+- `primepos-web/src/utils/date.ts` (new)
+- `primepos-web/src/utils/date.test.ts` (new)
+- `primepos-web/src/components/Avatar/Avatar.tsx` (new)
+- `primepos-web/src/components/Avatar/Avatar.module.css` (new)
+- `primepos-web/src/components/Avatar/Avatar.test.tsx` (new)
+- `primepos-web/src/components/StatusBadge/StatusBadge.tsx` (new)
+- `primepos-web/src/components/StatusBadge/StatusBadge.module.css` (new)
+- `primepos-web/src/components/StatusBadge/StatusBadge.test.tsx` (new)
+- `primepos-web/src/features/dashboard/RecentTransactions.tsx` (new)
+- `primepos-web/src/features/dashboard/recent-transactions.module.css` (new)
+- `primepos-web/src/features/dashboard/RecentTransactions.test.tsx` (new)
+- `primepos-web/src/features/dashboard/useRecentTransactions.ts` (new)
+- `primepos-web/src/features/dashboard/useRecentTransactions.test.tsx` (new)
+- `primepos-web/src/features/dashboard/DashboardScreen.tsx` (modified)
+- `primepos-web/src/features/dashboard/DashboardScreen.test.tsx` (modified)
+- `primepos-web/src/features/dashboard/dashboard.module.css` (modified)
 
 ---
 
 ## Change Log
 <!-- Summary of changes per session -->
----
+- 2026-05-06: Implemented Story 2.3 — Recent Transactions List. Created types, reusable components (Avatar, StatusBadge), feature component (RecentTransactions), TanStack Query hook (useRecentTransactions), date utility, wired into DashboardScreen. Added 21 tests. All 109 tests pass, lint clean, build succeeds.
+- 2026-05-06: Code review — 12 patch findings addressed: capped transactions at 5, sorted mock data descending, added error state handling, improved DashboardScreen integration test, removed `|| []` fallback, added Avatar `role="img"`, semantic list markup (ul/li), ARIA live semantics, StatusBadge explicit fallback + null guard, formatTime input validation, Avatar name/size guards, officerId whitespace trim. All 113 tests pass, lint clean, build succeeds.
 
 ## Completion Checklist
 
-- [ ] `RecentTransactions` renders up to 5 transaction items
-- [ ] Each item shows avatar, name, type+time, amount, status badge
-- [ ] `StatusBadge` is reusable with correct colors for POSTED/PENDING
-- [ ] `Avatar` generates consistent colors from name hash
-- [ ] Amounts formatted with `formatNaira`
-- [ ] Times formatted as "HH:MM AM/PM"
-- [ ] Empty state shown when no transactions
-- [ ] `useRecentTransactions` uses TanStack Query
-- [ ] Mock API returns realistic data
-- [ ] Unit tests for formatter, badge, avatar, list
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] `RecentTransactions` renders up to 5 transaction items
+- [x] Each item shows avatar, name, type+time, amount, status badge
+- [x] `StatusBadge` is reusable with correct colors for POSTED/PENDING
+- [x] `Avatar` generates consistent colors from name hash
+- [x] Amounts formatted with `formatNaira`
+- [x] Times formatted as "HH:MM AM/PM"
+- [x] Empty state shown when no transactions
+- [x] `useRecentTransactions` uses TanStack Query
+- [x] Mock API returns realistic data
+- [x] Unit tests for formatter, badge, avatar, list
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 

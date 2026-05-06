@@ -19,3 +19,8 @@
 - **LOGIN_START action exists in reducer but is never dispatched** [src/contexts/authReducer.ts] — pre-existing dead code; `LOGIN_START` was intentionally removed from `useLogin.ts` as a bug fix
 - **Navigation anchors use `href="#"` causing scroll jump and history noise** [src/App.tsx] — pre-existing placeholder bottom nav from Story 1.1
 - **Error response bodies parsed as raw text instead of structured JSON** [src/api/client.ts] — pre-existing from Story 1.1
+
+## Deferred from: code review of 2-3-recent-transactions-list (2026-05-06)
+
+- **React Query gcTime not configured** [useRecentTransactions.ts] — Pre-existing pattern across codebase (useDashboardKPIs also lacks it). Deferred until team decides on global caching strategy.
+- **Mock API omits date=today parameter** [useRecentTransactions.ts] — Temporary stub for MVP. Real API integration will add the date filter and limit params.

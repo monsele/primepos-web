@@ -8,6 +8,7 @@ import { useState } from 'react'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
+import CashInScreen from './features/cash-in/CashInScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -73,6 +74,8 @@ function AppShell() {
     switch (currentScreen) {
       case 'dashboard':
         return <DashboardScreen />
+      case 'cashIn':
+        return <CashInScreen />
       default:
         return (
           <PlaceholderContent

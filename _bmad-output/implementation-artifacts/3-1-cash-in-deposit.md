@@ -4,7 +4,7 @@ story_key: 3-1-cash-in-deposit
 epic: 3
 epic_title: Cash Transactions
 title: Cash In (Deposit)
-status: ready-for-dev
+status: review
 source_files:
   - prd.md §4.3.1
   - architecture.md §3.1, §5.2, §6.1
@@ -270,30 +270,30 @@ Use tokens from `src/index.css`.
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types
+  - [x] 5.2 Update parent screens
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils
+  - [x] 6.3 Integration tests
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
@@ -306,34 +306,58 @@ Use tokens from `src/index.css`.
 <!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
 
 ### Completion Notes
-<!-- Summarize what was actually implemented and tested -->
+- Created Account type and AccountCard reusable component with balance formatting
+- Built CashInScreen with search row, account card display, form fields, and post button
+- Implemented useAccountSearch hook using TanStack Query with manual search trigger
+- Implemented useCashIn hook with form state, validation, online posting, and offline queue fallback
+- Created mock API functions for account search (GET) and cash-in posting (POST)
+- Updated IndexedDB queue service to support real offline transaction storage
+- Wired CashInScreen into App.tsx navigation switch
+- Wrote 16 new tests across 4 test files (useAccountSearch, useCashIn, AccountCard, CashInScreen)
+- Full test suite: 129 tests passing, 0 regressions
+- Lint: 0 errors
+- Build: production build succeeds
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+- `primepos-web/src/types/account.ts` (new)
+- `primepos-web/src/components/AccountCard/AccountCard.tsx` (new)
+- `primepos-web/src/components/AccountCard/AccountCard.module.css` (new)
+- `primepos-web/src/components/AccountCard/AccountCard.test.tsx` (new)
+- `primepos-web/src/features/cash-in/CashInScreen.tsx` (new)
+- `primepos-web/src/features/cash-in/cash-in.module.css` (new)
+- `primepos-web/src/features/cash-in/CashInScreen.test.tsx` (new)
+- `primepos-web/src/features/cash-in/useAccountSearch.ts` (new)
+- `primepos-web/src/features/cash-in/useAccountSearch.test.tsx` (new)
+- `primepos-web/src/features/cash-in/useCashIn.ts` (new)
+- `primepos-web/src/features/cash-in/useCashIn.test.tsx` (new)
+- `primepos-web/src/api/accounts.ts` (new)
+- `primepos-web/src/api/transactions.ts` (new)
+- `primepos-web/src/services/storage/queue.ts` (modified)
+- `primepos-web/src/App.tsx` (modified)
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- 2026-05-06: Implemented Story 3.1 Cash In (Deposit) — all tasks complete, 129 tests passing, lint clean, build succeeds
 ---
 
 ## Completion Checklist
 
-- [ ] `CashInScreen` with search input, account card, form fields, post button
-- [ ] `useAccountSearch` hook with TanStack Query
-- [ ] `AccountCard` reusable component
-- [ ] Amount validation (required, > 0, numeric)
-- [ ] Success toast on post
-- [ ] Form resets after successful post
-- [ ] Offline: transaction queued in IndexedDB with warning toast
-- [ ] Mock API for account search and cash-in post
-- [ ] Unit tests for hooks, components, validation
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] `CashInScreen` with search input, account card, form fields, post button
+- [x] `useAccountSearch` hook with TanStack Query
+- [x] `AccountCard` reusable component
+- [x] Amount validation (required, > 0, numeric)
+- [x] Success toast on post
+- [x] Form resets after successful post
+- [x] Offline: transaction queued in IndexedDB with warning toast
+- [x] Mock API for account search and cash-in post
+- [x] Unit tests for hooks, components, validation
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 
 *Story context compiled from PRD, Architecture, UX Design, and Epics documents.*
-*Ready for development.*
+*Ready for review.*

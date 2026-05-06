@@ -9,6 +9,8 @@ import { KPICards } from './KPICards'
 import { QuickActions } from './QuickActions'
 import { useDashboardKPIs, useInvalidateDailySummary } from './useDashboardKPIs'
 import { PullToRefresh } from '../../components/PullToRefresh/PullToRefresh'
+import { RecentTransactions } from './RecentTransactions'
+import { useRecentTransactions } from './useRecentTransactions'
 import styles from './dashboard.module.css'
 
 export function DashboardScreen() {
@@ -17,6 +19,7 @@ export function DashboardScreen() {
   const { wentOffline, cameOnline } = useConnectionTransition()
   const { showToast } = useToast()
   const { data } = useDashboardKPIs()
+  const { data: transactions, isLoading: transactionsLoading, error: transactionsError } = useRecentTransactions(user?.staffId)
   const invalidate = useInvalidateDailySummary()
 
   useEffect(() => {
@@ -63,31 +66,11 @@ export function DashboardScreen() {
 
         <QuickActions />
 
-        <section className={styles.recentTransactions}>
-          <h3>Recent Transactions</h3>
-          <div className={styles.transactionList}>
-            <div className={styles.transactionItem}>
-              <div className={styles.txInfo}>
-                <span className={styles.txName}>Adediran Blessing</span>
-                <span className={styles.txType}>Cash In · 10:42 AM</span>
-              </div>
-              <div className={styles.txAmount}>
-                <span className={styles.amount}>₦5,000</span>
-                <span className={`${styles.badge} ${styles.badgePosted}`}>POSTED</span>
-              </div>
-            </div>
-            <div className={styles.transactionItem}>
-              <div className={styles.txInfo}>
-                <span className={styles.txName}>Adejumo Olusegun</span>
-                <span className={styles.txType}>Loan Repay · 10:18 AM</span>
-              </div>
-              <div className={styles.txAmount}>
-                <span className={styles.amount}>₦12,500</span>
-                <span className={`${styles.badge} ${styles.badgePosted}`}>POSTED</span>
-              </div>
-            </div>
-          </div>
-        </section>
+        <RecentTransactions
+          transactions={transactions}
+          isLoading={transactionsLoading}
+          error={transactionsError}
+        />
       </div>
     </PullToRefresh>
   )

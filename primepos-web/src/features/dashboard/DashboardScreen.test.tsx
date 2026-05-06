@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { DashboardScreen } from './DashboardScreen'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Mocks
 vi.mock('../../contexts/useAuth', () => ({
   useAuth: () => ({
-    user: { name: 'Test Officer', branchName: 'Test Branch' },
+    user: { name: 'Test Officer', branchName: 'Test Branch', staffId: 'STF001' },
   }),
 }))
 
@@ -76,5 +76,15 @@ describe('DashboardScreen', () => {
     expect(screen.getByTestId('quick-action-cash-out')).toBeInTheDocument()
     expect(screen.getByTestId('quick-action-loan-repay')).toBeInTheDocument()
     expect(screen.getByTestId('quick-action-new-account')).toBeInTheDocument()
+  })
+
+  it('renders RecentTransactions component with data from hook', async () => {
+    render(<DashboardScreen />, { wrapper: Wrapper })
+    expect(screen.getByTestId('recent-transactions')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('Adediran Blessing')).toBeInTheDocument()
+    }, { timeout: 2000 })
+    expect(screen.getByText('Adejumo Olusegun')).toBeInTheDocument()
+    expect(screen.getAllByTestId('transaction-item')).toHaveLength(2)
   })
 })
