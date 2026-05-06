@@ -1,102 +1,16 @@
-import { useEffect } from 'react'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './contexts/useAuth'
 import { SyncProvider } from './contexts/SyncContext'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import { ToastProvider } from './components/Toast/ToastProvider'
-import { useToast } from './components/Toast/useToast'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
-import OfflineIndicator from './components/OfflineIndicator'
-import { ConnectionBanner } from './components/ConnectionBanner/ConnectionBanner'
+import { DashboardScreen } from './features/dashboard/DashboardScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
-import { useNetworkStatus } from './hooks/useNetworkStatus'
-import { useConnectionTransition } from './hooks/useConnectionTransition'
 import './App.css'
-
-function DashboardContent() {
-  const { user } = useAuth()
-  const { isOnline } = useNetworkStatus()
-  const { wentOffline, cameOnline } = useConnectionTransition()
-  const { showToast } = useToast()
-
-  useEffect(() => {
-    if (wentOffline) {
-      showToast({
-        message: 'You are offline. Transactions will be saved locally.',
-        type: 'warning',
-      })
-    }
-    if (cameOnline) {
-      showToast({
-        message: 'Back online. Syncing pending transactions...',
-        type: 'success',
-      })
-    }
-  }, [wentOffline, cameOnline, showToast])
-
-  return (
-    <>
-      <OfflineIndicator />
-      <ConnectionBanner isOnline={isOnline} />
-
-      <section className="hero">
-        <h2>Welcome, {user?.name || 'Officer'}</h2>
-        <p>{user?.branchName || 'Branch'}</p>
-      </section>
-
-      <section className="quick-actions">
-        <h3>Quick Actions</h3>
-        <div className="actions-grid">
-          <button className="action-card" type="button">
-            <span className="action-icon">↓</span>
-            <span className="action-label">Cash In</span>
-          </button>
-          <button className="action-card" type="button">
-            <span className="action-icon">↑</span>
-            <span className="action-label">Cash Out</span>
-          </button>
-          <button className="action-card" type="button">
-            <span className="action-icon">💰</span>
-            <span className="action-label">Loan Repay</span>
-          </button>
-          <button className="action-card" type="button">
-            <span className="action-icon">✨</span>
-            <span className="action-label">New Account</span>
-          </button>
-        </div>
-      </section>
-
-      <section className="recent-transactions">
-        <h3>Recent Transactions</h3>
-        <div className="transaction-list">
-          <div className="transaction-item">
-            <div className="tx-info">
-              <span className="tx-name">Adediran Blessing</span>
-              <span className="tx-type">Cash In · 10:42 AM</span>
-            </div>
-            <div className="tx-amount">
-              <span className="amount">₦5,000</span>
-              <span className="badge posted">POSTED</span>
-            </div>
-          </div>
-          <div className="transaction-item">
-            <div className="tx-info">
-              <span className="tx-name">Adejumo Olusegun</span>
-              <span className="tx-type">Loan Repay · 10:18 AM</span>
-            </div>
-            <div className="tx-amount">
-              <span className="amount">₦12,500</span>
-              <span className="badge posted">POSTED</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  )
-}
 
 function PlaceholderContent({ title }: { title: string }) {
   return (
@@ -157,7 +71,7 @@ function AppShell() {
   const renderScreenContent = () => {
     switch (currentScreen) {
       case 'dashboard':
-        return <DashboardContent />
+        return <DashboardScreen />
       default:
         return (
           <PlaceholderContent
