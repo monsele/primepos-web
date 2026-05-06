@@ -20,7 +20,7 @@ interface UseLoginReturn {
 }
 
 export function useLogin(): UseLoginReturn {
-  const { startLogin, login, setError } = useAuth()
+  const { login, setError } = useAuth()
   const [staffId, setStaffId] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -28,11 +28,9 @@ export function useLogin(): UseLoginReturn {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [shake, setShake] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isMountedRef = useRef(true)
 
   useEffect(() => {
     return () => {
-      isMountedRef.current = false
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
@@ -56,6 +54,10 @@ export function useLogin(): UseLoginReturn {
   }, [staffId, password])
 
   const handleSubmit = useCallback(async () => {
+    if (isSubmitting) {
+      return
+    }
+
     setShake(false)
     setErrors({})
 
@@ -64,31 +66,22 @@ export function useLogin(): UseLoginReturn {
     }
 
     setIsSubmitting(true)
-    startLogin()
 
     try {
       const credentials: LoginRequest = { staffId: staffId.trim(), password }
       const response = await loginApi(credentials)
-      if (isMountedRef.current) {
-        login(response.user, response.accessToken)
-      }
+      login(response.user, response.accessToken)
     } catch (err) {
-      if (isMountedRef.current) {
-        const message = err instanceof Error ? err.message : 'Invalid credentials. Please try again.'
-        setError(message)
-        setShake(true)
-        timeoutRef.current = setTimeout(() => {
-          if (isMountedRef.current) {
-            setShake(false)
-          }
-        }, 500)
-      }
+      const message = err instanceof Error ? err.message : 'Invalid credentials. Please try again.'
+      setError(message)
+      setShake(true)
+      timeoutRef.current = setTimeout(() => {
+        setShake(false)
+      }, 500)
     } finally {
-      if (isMountedRef.current) {
-        setIsSubmitting(false)
-      }
+      setIsSubmitting(false)
     }
-  }, [staffId, password, validate, startLogin, login, setError])
+  }, [staffId, password, validate, login, setError, isSubmitting])
 
   return {
     staffId,

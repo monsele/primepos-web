@@ -1,5 +1,5 @@
 # generated: 2026-05-04T11:52:37
-# last_updated: 2026-05-04T11:52:37
+# last_updated: 2026-05-05T18:15:00
 # project: prime-app
 # project_key: NOKEY
 # tracking_system: file-system
@@ -24,7 +24,7 @@
 #   - done: Retrospective has been completed
 
 generated: 2026-05-04T11:52:37
-last_updated: 2026-05-04T11:52:37
+last_updated: 2026-05-05T17:28:20
 project: prime-app
 project_key: NOKEY
 tracking_system: file-system
@@ -33,46 +33,46 @@ story_location: {project-root}/_bmad-output/implementation-artifacts
 development_status:
   epic-1: in-progress
   1-1-officer-login: done
-  1-2-connection-status-offline-awareness: story-created
-  1-3-app-shell-navigation: story-created
+  1-2-connection-status-offline-awareness: done
+  1-3-app-shell-navigation: review
   epic-1-retrospective: optional
   epic-2: in-progress
-  2-1-dashboard-kpi-cards: story-created
-  2-2-quick-actions: story-created
-  2-3-recent-transactions-list: story-created
+  2-1-dashboard-kpi-cards: ready-for-dev
+  2-2-quick-actions: ready-for-dev
+  2-3-recent-transactions-list: ready-for-dev
   epic-2-retrospective: optional
   epic-3: in-progress
-  3-1-cash-in-deposit: story-created
-  3-2-cash-out-withdrawal: story-created
-  3-3-new-account-deposit: story-created
-  3-4-cash-transactions-menu: story-created
+  3-1-cash-in-deposit: ready-for-dev
+  3-2-cash-out-withdrawal: ready-for-dev
+  3-3-new-account-deposit: ready-for-dev
+  3-4-cash-transactions-menu: ready-for-dev
   epic-3-retrospective: optional
   epic-4: in-progress
-  4-1-loan-repayment: story-created
-  4-2-group-loan-repayment: story-created
-  4-3-loan-inquiry: story-created
+  4-1-loan-repayment: ready-for-dev
+  4-2-group-loan-repayment: ready-for-dev
+  4-3-loan-inquiry: ready-for-dev
   epic-4-retrospective: optional
   epic-5: in-progress
-  5-1-new-savings-account-3-step-wizard: story-created
-  5-2-account-balance-inquiry: story-created
-  5-3-account-statement: story-created
+  5-1-new-savings-account-3-step-wizard: ready-for-dev
+  5-2-account-balance-inquiry: ready-for-dev
+  5-3-account-statement: ready-for-dev
   epic-5-retrospective: optional
   epic-6: in-progress
-  6-1-batch-bbls-deposit: story-created
-  6-2-card-transactions: story-created
+  6-1-batch-bbls-deposit: ready-for-dev
+  6-2-card-transactions: ready-for-dev
   epic-6-retrospective: optional
   epic-7: in-progress
-  7-1-reports-dashboard: story-created
-  7-2-detailed-reports-placeholder: story-created
+  7-1-reports-dashboard: ready-for-dev
+  7-2-detailed-reports-placeholder: ready-for-dev
   epic-7-retrospective: optional
   epic-8: in-progress
-  8-1-indexeddb-local-storage: story-created
-  8-2-transaction-queue-manager: story-created
-  8-3-offline-data-cache: story-created
-  8-4-service-worker-pwa-update-flow: story-created
+  8-1-indexeddb-local-storage: ready-for-dev
+  8-2-transaction-queue-manager: ready-for-dev
+  8-3-offline-data-cache: ready-for-dev
+  8-4-service-worker-pwa-update-flow: ready-for-dev
   epic-8-retrospective: optional
   epic-9: in-progress
-  9-1-menu-offline-data: story-created
-  9-2-my-profile: story-created
-  9-3-settings-sign-out: story-created
+  9-1-menu-offline-data: ready-for-dev
+  9-2-my-profile: ready-for-dev
+  9-3-settings-sign-out: ready-for-dev
   epic-9-retrospective: optional

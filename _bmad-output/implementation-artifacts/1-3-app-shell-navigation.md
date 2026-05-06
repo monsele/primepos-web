@@ -4,7 +4,7 @@ story_key: 1-3-app-shell-navigation
 epic: 1
 epic_title: Authentication & App Shell
 title: App Shell & Navigation
-status: story-created
+status: review
 source_files:
   - prd.md §4.1, §4.2
   - architecture.md §3.1, §3.2, §3.3
@@ -295,6 +295,93 @@ Use tokens from `src/index.css`. Key ones:
 | **Story 1.2** (Connection Status) | Header contains `<ConnectionPill>`; ConnectionBanner sits below header. Coordinate z-index and spacing. |
 | **Story 2.1–2.3** (Dashboard) | Dashboard is the first screen (`currentScreen = 'dashboard'`). |
 | **All future stories** | Every new screen must be added to the `Screen` type and navigation reducer. |
+
+---
+
+## Tasks/Subtasks
+
+- [x] **Task 1: Create type definitions and navigation context**
+  - [x] 1.1 Create `src/types/navigation.ts` with `Screen` union type
+  - [x] 1.2 Create `src/contexts/NavigationContext.tsx` with reducer, state, provider, and hooks
+- [x] **Task 2: Create BottomNav component**
+  - [x] 2.1 Create `src/components/BottomNav/BottomNav.tsx`
+  - [x] 2.2 Create `src/components/BottomNav/BottomNav.module.css`
+- [x] **Task 3: Create Header component**
+  - [x] 3.1 Create `src/components/Header/Header.tsx`
+  - [x] 3.2 Create `src/components/Header/Header.module.css`
+- [x] **Task 4: Create ScreenTransition component**
+  - [x] 4.1 Create `src/components/ScreenTransition/ScreenTransition.tsx`
+  - [x] 4.2 Create `src/components/ScreenTransition/ScreenTransition.module.css`
+- [x] **Task 5: Update App.tsx and App.css**
+  - [x] 5.1 Refactor `src/App.tsx` to use `NavigationContext`, render current screen, wire `BottomNav` and `Header`
+  - [x] 5.2 Update `src/App.css` to keep layout shell only
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit test: Navigation reducer (NAVIGATE, GO_BACK, REPLACE)
+  - [x] 6.2 Unit test: `BottomNav` renders 5 tabs, highlights active, calls navigateTo
+  - [x] 6.3 Unit test: `Header` dashboard vs inner-screen modes, back button calls goBack
+  - [x] 6.4 Unit test: `isInnerScreen` returns correct boolean for main tabs vs inner screens
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
+
+---
+
+## Dev Agent Record
+
+### Debug Log
+- Fixed reducer logic: navigating to any main tab now clears history and sets transition to 'none', regardless of current screen state. This prevents history accumulation when switching tabs from inner screens.
+
+### Implementation Plan
+- **Architecture:** React Context + useReducer for navigation state. No routing library installed.
+- **Screen type:** Union type covering all 28 screens (5 main tabs + 23 inner screens), extensible for future stories.
+- **Reducer design:** NAVIGATE to main tab → instant switch, clear history. NAVIGATE to inner screen → push to history, animate. GO_BACK → pop history, reverse animate. REPLACE → swap current screen, no animation.
+- **AppShell pattern:** App.tsx wraps all screens in a consistent container with Header (fixed top), main content area with ScreenTransition, and conditional BottomNav (fixed bottom). Each screen renders only its content, not the shell.
+
+### Completion Notes
+- Created `Screen` union type with 28 screen identifiers and `MAIN_TAB_SCREENS` constant for inner-screen detection.
+- Built `NavigationContext` with reducer exposing `navigateTo`, `goBack`, `replace`, `currentScreen`, `isInnerScreen`, and `transitionDirection`.
+- Implemented `BottomNav` with 5 tabs, active state (orange icon/label + dot indicator), and `navigateTo` on tap.
+- Implemented `Header` with dashboard mode (brand logo + ConnectionPill) and inner-screen mode (back arrow + title + action slot).
+- Implemented `ScreenTransition` with CSS keyframe animations (slideInRight/slideOutRight) and `prefers-reduced-motion` support.
+- Refactored `App.tsx` to use `NavigationProvider`, `AppShell` pattern with conditional `BottomNav`, and placeholder screens for unimplemented features.
+- Removed header and bottom-nav styles from `App.css`, keeping only layout shell and dashboard content styles.
+- Wrote 20 unit tests across navigation reducer (9), BottomNav (5), and Header (6). All 78 project tests pass with zero regressions.
+- Build succeeds with no TypeScript or Vite errors.
+
+---
+
+## File List
+
+### New Files
+- `primepos-web/src/types/navigation.ts`
+- `primepos-web/src/types/navigation.test.ts`
+- `primepos-web/src/contexts/NavigationContext.tsx`
+- `primepos-web/src/components/BottomNav/BottomNav.tsx`
+- `primepos-web/src/components/BottomNav/BottomNav.module.css`
+- `primepos-web/src/components/BottomNav/BottomNav.test.tsx`
+- `primepos-web/src/components/Header/Header.tsx`
+- `primepos-web/src/components/Header/Header.module.css`
+- `primepos-web/src/components/Header/Header.test.tsx`
+- `primepos-web/src/components/ScreenTransition/ScreenTransition.tsx`
+- `primepos-web/src/components/ScreenTransition/ScreenTransition.module.css`
+
+### Modified Files
+- `primepos-web/src/App.tsx`
+- `primepos-web/src/App.css`
+- `primepos-web/src/App.test.tsx` (indirectly — component imports changed but test logic intact)
+
+---
+
+## Change Log
+
+**2026-05-05** — Story 1.3 implementation complete
+- Created navigation system (types, context, reducer)
+- Created BottomNav, Header, ScreenTransition components
+- Refactored App.tsx to state-driven shell architecture
+- Added 20 unit tests, all passing (78/78 total)
+- Build succeeds
 
 ---
 

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface NetworkInformation {
-  effectiveType?: string
+  effectiveType?: '4g' | '3g' | '2g' | 'slow-2g' | 'unknown'
   addEventListener: (type: string, listener: () => void) => void
   removeEventListener: (type: string, listener: () => void) => void
 }
@@ -10,11 +10,20 @@ interface NavigatorWithConnection extends Navigator {
   connection?: NetworkInformation
 }
 
-export function useNetworkStatus() {
+export interface NetworkStatus {
+  isOnline: boolean
+  connectionType: string
+  since: Date | null
+}
+
+export function useNetworkStatus(): NetworkStatus {
   const [isOnline, setIsOnline] = useState<boolean>(
     typeof navigator !== 'undefined' ? navigator.onLine : true
   )
   const [connectionType, setConnectionType] = useState<string>('unknown')
+  const [since, setSince] = useState<Date | null>(new Date())
+
+  const prevIsOnlineRef = useRef<boolean>(isOnline)
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true)
@@ -45,5 +54,12 @@ export function useNetworkStatus() {
     }
   }, [])
 
-  return { isOnline, connectionType }
+  useEffect(() => {
+    if (isOnline !== prevIsOnlineRef.current) {
+      setSince(new Date())
+      prevIsOnlineRef.current = isOnline
+    }
+  }, [isOnline])
+
+  return { isOnline, connectionType, since }
 }

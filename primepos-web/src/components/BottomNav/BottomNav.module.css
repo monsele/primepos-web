@@ -1,0 +1,59 @@
+.bottomNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0.5rem 0 calc(0.5rem + var(--safe-bottom));
+  background: var(--color-surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.625rem;
+  font-weight: 500;
+  transition: color 0.15s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  position: relative;
+}
+
+.navItem:active {
+  opacity: 0.8;
+}
+
+.navIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.navLabel {
+  font-size: 0.625rem;
+}
+
+.active {
+  color: var(--color-primary);
+}
+
+.activeDot {
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navItem {
+    transition: none;
+  }
+}

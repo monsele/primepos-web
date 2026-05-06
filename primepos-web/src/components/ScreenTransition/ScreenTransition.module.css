@@ -1,0 +1,45 @@
+.screenWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.noAnimation {
+  animation: none;
+}
+
+.slideInRight {
+  animation: slideInRight 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slideOutRight {
+  animation: slideOutRight 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slideInRight,
+  .slideOutRight {
+    animation: none;
+  }
+}

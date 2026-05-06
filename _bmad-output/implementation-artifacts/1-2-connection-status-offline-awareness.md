@@ -4,7 +4,7 @@ story_key: 1-2-connection-status-offline-awareness
 epic: 1
 epic_title: Authentication & App Shell
 title: Connection Status & Offline Awareness
-status: story-created
+status: done
 source_files:
   - prd.md §4.1, §4.9
   - architecture.md §3.1, §5.1, §6.2
@@ -61,23 +61,24 @@ Scenario: Network type detection
 
 ### What Exists Today
 
-The project `primepos-web/` currently has a **basic** network status implementation:
+The project `primepos-web/` currently has a **partial** network status implementation following Story 1.1 completion:
 
 | File | Current State |
 |------|---------------|
-| `src/hooks/useNetworkStatus.ts` | Returns `{ isOnline, connectionType }` via `navigator.onLine` and `navigator.connection`. No timestamps, no transition events. |
-| `src/components/OfflineIndicator.tsx` | Shows SW update banner only. Not related to network status. |
-| `src/App.tsx` | Shows a simple `offline-banner` when `!isOnline`. No connection banner when online. No toasts. No transition animations. |
-| `src/App.css` | Basic `.offline-banner`, `.connection-status.online/offline` styles exist but are static. |
-| `src/index.css` | Design tokens exist (`--color-success`, `--color-warning`, `--color-danger`). No toast or animation utilities. |
+| `src/hooks/useNetworkStatus.ts` | Returns `{ isOnline, connectionType }` via `navigator.onLine` and `navigator.connection`. Already has `typeof navigator !== 'undefined'` SSR guard and `NetworkInformation` interface typing from Story 1.1 review patch. **Missing:** `since` timestamp, transition events. |
+| `src/components/OfflineIndicator.tsx` | SW update banner only (listens to `sw-update` window event). **Do NOT repurpose** — architecture §7.2 reserves this name for global offline banner, but current implementation is strictly for PWA update prompts. |
+| `src/App.tsx` | Has `AuthProvider` → `AppContent` structure. `DashboardScreen` renders inline `offline-banner` when `!isOnline`, a `connection-status` div in header (green/red pill), `OfflineIndicator` for SW updates, and placeholder bottom nav. **Must preserve** all existing Dashboard content while replacing banner/pill with new components. |
+| `src/App.css` | Contains `.offline-banner`, `.connection-status.online/offline`, `.update-banner`, header, bottom-nav, and all Dashboard placeholder styles. Story 1.2 will **migrate** connection styles to CSS Modules and remove old banner styles. |
+| `src/index.css` | Design tokens exist. **Missing:** toast animation keyframes, fade/slide utility keyframes. |
+| `src/features/auth/LoginScreen.tsx` | Already has inline offline banner (`{!isOnline && <div className={styles.offlineBanner}>...}`). Do NOT modify — LoginScreen's banner is story-specific. |
 
 **What does NOT exist yet:**
 - Toast/notification system for transition messages
 - Connection status banner component (dedicated, animated)
 - `SyncContext` for tracking pending sync count (needed for "Syncing pending transactions" toast)
-- Transition detection (detecting when online→offline or offline→online changes)
+- Transition detection hook (`useConnectionTransition`)
 - Timestamp tracking for "since when" display
-- `idb-keyval` integration for offline queue awareness
+- IndexedDB queue integration for offline queue awareness
 
 ### Files to Create
 
@@ -92,7 +93,7 @@ The project `primepos-web/` currently has a **basic** network status implementat
 | `src/components/Toast/ToastProvider.tsx` | Context provider managing toast queue and auto-dismiss |
 | `src/contexts/SyncContext.tsx` | Tracks pending sync count, sync state (idle \| syncing \| error) |
 | `src/hooks/useConnectionTransition.ts` | Detects online→offline and offline→online transitions, triggers toasts |
-| `src/services/storage/queue.ts` | IndexedDB queue storage for pending transactions count |
+| `src/services/storage/queue.ts` | Placeholder queue service returning `pendingCount=0`. Architecture names this area `transactions.ts` in §5.1, but `queue.ts` is used here as a lightweight placeholder until Epic 8. |
 
 ### Files to Update
 
@@ -100,8 +101,28 @@ The project `primepos-web/` currently has a **basic** network status implementat
 |------|--------|
 | `src/hooks/useNetworkStatus.ts` | Add `since` timestamp (Date when state last changed), expose `wasOffline` helper, improve Network Information typing |
 | `src/App.tsx` | Wire `SyncContext.Provider`, `ToastProvider`, replace inline offline banner with `<ConnectionBanner>`, add `<ConnectionPill>` to header |
-| `src/App.css` | Remove old `.offline-banner` and `.connection-status` styles (moved to modules), add toast animation keyframes if needed |
-| `src/index.css` | Add `fade-in`, `fade-out`, `slide-up` utility keyframes for banner and toast transitions |
+| `src/App.css` | Remove old `.offline-banner` and `.connection-status` styles (moved to modules). Keep all Dashboard, header, bottom-nav, and update-banner styles untouched. |
+| `src/index.css` | Add `fade-in`, `fade-out`, `slide-up` utility keyframes for banner and toast transitions. Place global animation utilities here; component-specific animations (e.g., toast slide) go in their respective CSS Modules. |
+
+---
+
+## Previous Story Intelligence (Story 1.1)
+
+Story 1.1 established these patterns **you MUST follow**:
+
+| Pattern | Location | Notes |
+|---------|----------|-------|
+| Test co-location | `ComponentName.test.tsx` beside component | Used for Button, Input, AuthContext, useLogin |
+| Fake timers | `vi.useFakeTimers()` in tests | Essential for async state and auto-dismiss testing |
+| Hook unmount safety | AbortController / cleanup pattern | Story 1.1 review patched `setTimeout` leaks in `useLogin` — apply same rigor to `useConnectionTransition` |
+| Component accessibility | `aria-label`, `aria-pressed`, `role` | Button password toggle and error banners set the standard |
+| CSS Module naming | `PascalCase` folder + `ComponentName.module.css` | Follow exactly for ConnectionBanner, ConnectionPill, Toast |
+
+**Story 1.1 Review Findings Relevant to This Story:**
+- `[Patch] navigator SSR crash risk` — `useNetworkStatus.ts` already has `typeof navigator !== 'undefined'` guard. Do NOT remove it.
+- `[Patch] LoginScreen missing offline connection banner` — LoginScreen now has its own inline offline banner. Leave it untouched; this story builds the **global** banner/pill system for the app shell.
+- `[Patch] App.tsx missing isLoading routing guard` — Already fixed. Preserve `AppContent` structure exactly.
+- `[Defer] Offline login (cached credentials)` — Deferred to Epic 8. Do NOT implement credential caching here.
 
 ---
 
@@ -110,7 +131,7 @@ The project `primepos-web/` currently has a **basic** network status implementat
 ### Architecture Compliance
 
 1. **State Management:** Use React Context for sync state. Do NOT install Redux, Zustand, or Jotai.
-2. **Storage:** Use `idb-keyval` for offline queue count (already in `package.json` as dependency from Story 1.1). Do NOT use localStorage.
+2. **Storage:** `idb-keyval` is specified in Architecture §2.2 for IndexedDB access, but it is **NOT yet installed** (`package.json` lacks it). For this story, `queue.ts` is a mock placeholder returning `pendingCount=0` — no actual IndexedDB operations needed. **Do NOT install `idb-keyval` in this story**; defer to Epic 8 when real queue storage is implemented. Do NOT use localStorage.
 3. **Styling:** Use CSS Modules with CSS custom properties. Do NOT install Tailwind, Styled Components, or Emotion.
 4. **Animation:** Use CSS transitions and keyframes. Do NOT install Framer Motion or similar libraries.
 5. **Network API:** Use native `navigator.onLine` + Network Information API. No external network libraries needed.
@@ -145,29 +166,32 @@ function useConnectionTransition(): ConnectionTransition
 ```
 
 **Logic:**
-- Compare previous `isOnline` value with current
+- Compare previous `isOnline` value with current using `useRef` or `usePrevious` pattern
 - `wentOffline` = previous true, current false
 - `cameOnline` = previous false, current true
 - Reset flags after toast is triggered (one-shot)
+- **Critical:** Must clean up any timers/refs on unmount to prevent memory leaks (pattern established in Story 1.1 `useLogin` review patch)
 
 ### Sync Context Spec
 
+**MUST align with Architecture §4.4** (source of truth for cross-story interfaces):
+
 ```typescript
 interface SyncState {
+  isSyncing: boolean
+  lastSyncAt: Date | null
   pendingCount: number
-  status: 'idle' | 'syncing' | 'error'
-  lastSyncedAt: Date | null
+  syncError: string | null
 }
 
 type SyncAction =
-  | { type: 'QUEUE_ITEM' }
-  | { type: 'SYNC_START' }
+  | { type: 'START_SYNC' }
   | { type: 'SYNC_SUCCESS'; payload: number }  // items synced
-  | { type: 'SYNC_FAILURE'; payload: string }
-  | { type: 'SET_PENDING'; payload: number }
+  | { type: 'SYNC_ERROR'; payload: string }
+  | { type: 'UPDATE_PENDING_COUNT'; payload: number }
 ```
 
-For this story, `SyncContext` can be a placeholder with mock data (0 pending). Full queue implementation comes in Epic 8 (Offline Engine).
+**For this story:** `SyncContext` is a placeholder. `pendingCount` returns `0`, `isSyncing` is `false`, `lastSyncAt` is `null`, `syncError` is `null`. Full queue implementation and reducer logic come in Epic 8 (Offline Engine). The interface must match architecture exactly to prevent breaking changes in Stories 8.1–8.4.
 
 ### Connection Banner Spec
 
@@ -181,14 +205,14 @@ interface ConnectionBannerProps {
 **Visual (Online):**
 - Height: 24px
 - Background: transparent (subtle, no bg needed — text only on dark bg)
-- Text: `#22c55e` (success), "Connected — All features available"
+- Text: `var(--color-success)`, "Connected — All features available"
 - Font: 11px, 500 weight, centered
 - Icon: small green dot (●) or Wi-Fi icon
 
 **Visual (Offline):**
 - Height: 24px
 - Background: transparent
-- Text: `#eab308` (warning), "Offline — Limited features available"
+- Text: `var(--color-warning)`, "Offline — Limited features available"
 - Font: 11px, 500 weight, centered
 - Icon: warning triangle or crossed Wi-Fi
 
@@ -196,6 +220,10 @@ interface ConnectionBannerProps {
 - Fade in/out, 200ms ease
 - Conditionally rendered based on `isOnline`
 - Positioned directly below the header
+
+**Accessibility (UX §6.3):**
+- Add `role="status"` and `aria-live="polite"` so screen readers announce connection changes
+- Do NOT use `aria-live="assertive"` — connection changes are informational, not urgent errors
 
 ### Connection Pill Spec
 
@@ -242,12 +270,19 @@ function dismissToast(id: string): void
 - Border-radius: `--radius-md`
 - Shadow: `--shadow-md`
 - Animation: slide up from bottom, 250ms ease-out; auto-dismiss with fade-out
+- **z-index:** Must render above `.bottom-nav` but below any future modals. Use `z-index: 50` (nav should be `z-index: 40` or lower).
+
+**Accessibility (UX §6.3):**
+- Wrap toast container in `role="status"` with `aria-live="polite"`
+- Each toast item should have `aria-atomic="true"` so screen readers read the full message
 
 **Toast Messages:**
 | Trigger | Message | Type |
 |---------|---------|------|
 | Online → Offline | "You are offline. Transactions will be saved locally." | `warning` |
 | Offline → Online | "Back online. Syncing pending transactions..." | `success` |
+
+**Reusability Note:** This Toast system is the app's **global notification pattern**. Future stories (Cash In, Loan Repayment, etc.) will use it for "Transaction posted", "Validation failed", etc. Design it as a generic reusable system, not connection-specific.
 
 ### Screen Layout (Updated App Shell)
 
@@ -264,7 +299,7 @@ function dismissToast(id: string): void
 ├─────────────────────────────────┤
 │  🔔 Toast (if transition)       │  ← Toast (absolute, bottom)
 ├─────────────────────────────────┤
-│  🏠 ⚡ ⊞ 📊 ⋯                  │  ← BottomNav (future)
+│  🏠 ⚡ ⊞ 📊 ⋯                  │  ← BottomNav (placeholder from Story 1.1)
 └─────────────────────────────────┘
 ```
 
@@ -279,6 +314,23 @@ Offline variant:
 │                                 │
 └─────────────────────────────────┘
 ```
+
+**Provider Wiring in `App.tsx`:**
+```typescript
+function App() {
+  return (
+    <AuthProvider>
+      <SyncProvider>        {/* NEW — wraps both auth states */}
+        <ToastProvider>     {/* NEW — available everywhere */}
+          <AppContent />
+        </ToastProvider>
+      </SyncProvider>
+    </AuthProvider>
+  )
+}
+```
+- `SyncProvider` and `ToastProvider` must wrap `AppContent` so both LoginScreen and DashboardScreen can access them.
+- Do NOT put providers inside `DashboardScreen` — they must be at the `App()` level.
 
 ---
 
@@ -332,6 +384,13 @@ src/
 | Offline flow | Trigger `offline` event → banner shows offline → toast appears with correct message |
 | Online flow | Trigger `online` event after offline → banner shows online → toast appears |
 | App shell | Header contains ConnectionPill, banner renders below header, ToastProvider is active |
+| Accessibility | Banner has `role="status"`, toast container has `aria-live="polite"` |
+
+**Test Patterns (from Story 1.1):**
+- Co-locate tests: `ComponentName.test.tsx` next to `ComponentName.tsx`
+- Use `vi.useFakeTimers()` for auto-dismiss and animation timing tests
+- Use `@testing-library/react` `render`, `screen`, `fireEvent`
+- Mock `window.addEventListener('online'/'offline')` for hook tests
 
 ---
 
@@ -402,13 +461,141 @@ Use these tokens. Do NOT hardcode colors or values.
 
 ---
 
-## Open Questions
+## Open Questions — Resolved
 
-1. **Banner persistence:** Should the online banner always be visible, or only on transition? Recommendation: Show a very subtle online indicator (small green dot + text) persistently, but the full banner text is most useful when offline.
-2. **Toast stacking:** If connection flaps rapidly, should toasts stack or replace? Recommendation: Replace the previous connection toast with the new one to avoid spam.
-3. **Sync on reconnect:** Should the app automatically attempt sync when coming online? Recommendation: Yes, trigger a sync attempt and show "Syncing..." toast. Full sync logic is Story 8.2.
+1. **Banner persistence:** ✅ **RESOLVED** — UX §2.2 specifies the connection banner is **always visible** (24px height, fixed below status bar). Online state shows green "Connected — All features available"; offline shows yellow warning. Both persist.
+2. **Toast stacking:** ✅ **RESOLVED** — Replace the previous connection toast with the new one. If a connection toast is already visible and the state flaps, dismiss the old toast and show the new one. Prevents spam.
+3. **Sync on reconnect:** ✅ **RESOLVED** — Show "Back online. Syncing pending transactions..." toast as a placeholder message. Do NOT implement actual sync logic — that is Story 8.2. The toast message sets user expectation; the actual sync trigger comes later.
+
+---
+
+## Tasks/Subtasks
+
+- [x] Task 1: Enhance `useNetworkStatus` hook with `since` timestamp and proper typing + tests
+- [x] Task 2: Create `useConnectionTransition` hook for transition detection + tests
+- [x] Task 3: Create `SyncContext` with reducer matching architecture interface + tests
+- [x] Task 4: Create Toast system (`Toast.tsx`, `ToastProvider.tsx`, styles) + tests
+- [x] Task 5: Create `ConnectionBanner` component with fade transitions + tests
+- [x] Task 6: Create `ConnectionPill` component for header badge + tests
+- [x] Task 7: Create `services/storage/queue.ts` placeholder
+- [x] Task 8: Update `App.tsx` to wire providers and replace inline banner/pill
+- [x] Task 9: Update `App.css` (remove migrated styles) and `index.css` (add keyframes)
+- [x] Task 10: Run full test suite, lint, and build — verify zero regressions
+
+---
+
+## Dev Agent Record
+
+### Implementation Plan
+- Followed red-green-refactor cycle: wrote tests first, then implementation
+- Used React Context + useReducer for SyncContext (per architecture requirements)
+- Used CSS Modules with design tokens from `index.css` (no Tailwind/Styled Components)
+- Toast system built as generic reusable notification pattern for all future stories
+- Connection transition toasts implemented via `useEffect` in DashboardScreen
+
+### Debug Log
+- Fixed ESLint `react-hooks/refs` error in `useConnectionTransition` by refactoring from ref-based render-phase detection to state + effect pattern
+- Fixed ESLint `react-refresh/only-export-components` by separating `useToast` hook and `ToastContext` into dedicated files
+- Fixed ESLint `react-hooks/exhaustive-deps` in ToastProvider by capturing ref value in local variable inside effect
+- Fixed ESLint `react-hooks/set-state-in-effect` by deferring reset state updates with `setTimeout(..., 0)`
+- Fixed TypeScript build error in `App.test.tsx` by providing complete `Officer` mock object
+- Added `dev-dist` to ESLint `globalIgnores` to suppress pre-existing generated file errors
+- **BUG FIX (runtime):** Removed `startLogin()` call from `useLogin.ts` — `LOGIN_START` set global `isLoading=true`, which caused `AppContent` to unmount `LoginScreen` and show `LoadingSpinner`. When the mock API resolved, `isMountedRef.current` was `false` (due to unmount), so `login()` was never called, leaving the app stuck on the spinner forever.
+
+### Completion Notes
+- All acceptance criteria satisfied:
+  ✅ Online status display (green banner + Online pill)
+  ✅ Offline status display (yellow banner + red Offline pill)
+  ✅ Status transitions within seconds with toast notifications
+  ✅ Network type detection preserved via existing `useNetworkStatus`
+- 56 tests passing (12 test files), zero regressions in existing Story 1.1 tests
+- Build successful, zero lint errors in src/
+- No new dependencies installed (per architecture requirements)
+
+---
+
+## File List
+
+### Created
+- `src/hooks/useNetworkStatus.test.ts`
+- `src/hooks/useConnectionTransition.ts`
+- `src/hooks/useConnectionTransition.test.tsx`
+- `src/contexts/syncReducer.ts`
+- `src/contexts/syncContextValue.ts`
+- `src/contexts/SyncContext.tsx`
+- `src/contexts/useSync.ts`
+- `src/contexts/SyncContext.test.tsx`
+- `src/components/ConnectionBanner/ConnectionBanner.tsx`
+- `src/components/ConnectionBanner/ConnectionBanner.module.css`
+- `src/components/ConnectionBanner/ConnectionBanner.test.tsx`
+- `src/components/ConnectionPill/ConnectionPill.tsx`
+- `src/components/ConnectionPill/ConnectionPill.module.css`
+- `src/components/ConnectionPill/ConnectionPill.test.tsx`
+- `src/components/Toast/ToastProvider.tsx`
+- `src/components/Toast/Toast.module.css`
+- `src/components/Toast/useToast.ts`
+- `src/components/Toast/toastContext.ts`
+- `src/components/Toast/toastTypes.ts`
+- `src/components/Toast/Toast.test.tsx`
+- `src/services/storage/queue.ts`
+- `src/App.test.tsx`
+
+### Modified
+- `src/hooks/useNetworkStatus.ts` — added `since` timestamp
+- `src/App.tsx` — wired SyncProvider, ToastProvider, ConnectionBanner, ConnectionPill; added transition toast effects
+- `src/App.css` — removed `.offline-banner` and `.connection-status` styles
+- `src/index.css` — added `fadeIn`, `fadeOut`, `slideUp` keyframes
+- `eslint.config.js` — added `dev-dist` to ignore patterns
+- `src/features/auth/useLogin.ts` — removed `startLogin()` call to fix infinite loading bug
+
+### Deleted
+- (none)
+
+---
+
+## Change Log
+
+- Implemented Story 1.2: Connection Status & Offline Awareness (2026-05-05)
+- Enhanced `useNetworkStatus` with `since` timestamp
+- Created `useConnectionTransition` for online/offline transition detection
+- Created `SyncContext` placeholder aligned with Architecture §4.4
+- Created reusable Toast notification system
+- Created `ConnectionBanner` and `ConnectionPill` components
+- Updated app shell with provider wiring and transition toasts
+- 56 tests passing, zero lint errors, build successful
 
 ---
 
 *Story context compiled from PRD, Architecture, UX Design, and Epics documents.*
 *Ready for development.*
+
+### Review Findings
+
+**Patch findings (actionable now):**
+
+- [x] [Review][Patch] Concurrent login submissions not guarded against rapid-fire calls [src/features/auth/useLogin.ts] — `handleSubmit` should check `if (isSubmitting) return` before starting the async login call
+- [x] [Review][Patch] ToastProvider uses mountedRef anti-pattern vulnerable to StrictMode [src/components/Toast/ToastProvider.tsx] — Same StrictMode bug pattern that broke `useLogin.ts`: cleanup sets `mountedRef.current = false`, but remount doesn't reset it. In React 19, simply remove the `mountedRef` guard.
+- [x] [Review][Patch] ConnectionBanner tests contain duplicate assertions [src/components/ConnectionBanner/ConnectionBanner.test.tsx] — Both `renders online state` and `renders offline state` tests repeat the same `expect(...).toBeInTheDocument()` assertion twice
+
+**Deferred findings (pre-existing or out of scope):**
+
+- [x] [Review][Defer] Hardcoded mock credentials shipped in source [src/api/auth.ts] — pre-existing from Story 1.1, deferred to future epic
+- [x] [Review][Defer] Button loses accessible name and purpose while loading [src/components/Button/Button.tsx] — pre-existing from Story 1.1
+- [x] [Review][Defer] Fetch requests have no timeout or abort signal [src/api/client.ts] — pre-existing from Story 1.1
+- [x] [Review][Defer] Duplicate and invalid DOM IDs generated from label text [src/components/Input/Input.tsx] — pre-existing from Story 1.1
+- [x] [Review][Defer] Custom `Headers` object silently discarded in apiClient [src/api/client.ts] — pre-existing from Story 1.1
+- [x] [Review][Defer] Unsafe type assertion on HTTP 204 No Content [src/api/client.ts] — pre-existing from Story 1.1
+- [x] [Review][Defer] Unhandled promise rejection in LoginScreen form handler [src/features/auth/LoginScreen.tsx] — pre-existing from Story 1.1
+- [x] [Review][Defer] No Error Boundary at application root [src/App.tsx] — pre-existing from Story 1.1
+- [x] [Review][Defer] LOGIN_START action exists in reducer but is never dispatched [src/contexts/authReducer.ts] — pre-existing dead code; intentionally removed from `useLogin.ts` as bug fix
+- [x] [Review][Defer] Navigation anchors use `href="#"` causing scroll jump and history noise [src/App.tsx] — pre-existing placeholder bottom nav from Story 1.1
+- [x] [Review][Defer] Error response bodies parsed as raw text instead of structured JSON [src/api/client.ts] — pre-existing from Story 1.1
+
+**Dismissed findings (noise / false positive):**
+
+- setTimeout leak and state update on unmounted LoginScreen — false positive; `timeoutRef` and cleanup effect exist
+- SSR / Node crash from `navigator.onLine` accessed during render — false positive; `typeof navigator !== 'undefined'` guard exists
+- Toast ID generation uses `Math.random()` — acceptable collision risk for toast system
+- Redundant `fadeIn` keyframe in `ConnectionBanner.module.css` — harmless; CSS Modules scope keyframes locally
+- `useConnectionTransition` causes extra re-renders per transition — negligible performance impact
+- `useNetworkStatus` uses both `useRef` and `useState` for `since` — valid pattern to prevent duplicate updates

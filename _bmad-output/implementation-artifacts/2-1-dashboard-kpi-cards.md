@@ -4,7 +4,7 @@ story_key: 2-1-dashboard-kpi-cards
 epic: 2
 epic_title: Dashboard & Navigation
 title: Dashboard KPI Cards
-status: story-created
+status: ready-for-dev
 source_files:
   - prd.md §4.2
   - architecture.md §3.1, §6.1
@@ -235,6 +235,58 @@ Use tokens from `src/index.css`.
 | **Story 2.3** (Recent Transactions) | Recent transactions list sits below Quick Actions |
 | **Story 8.2** (Queue Manager) | Pending sync count comes from SyncContext / queue storage |
 
+
+---
+
+## Tasks/Subtasks
+
+- [ ] **Task 1: Create components and types**
+  - [ ] 1.1 Create type definitions
+  - [ ] 1.2 Create reusable components
+- [ ] **Task 2: Build feature screen(s)**
+  - [ ] 2.1 Create main screen component(s)
+  - [ ] 2.2 Create styles module
+- [ ] **Task 3: Implement hooks and logic**
+  - [ ] 3.1 Create data fetching hooks
+  - [ ] 3.2 Implement form/business logic
+- [ ] **Task 4: API and services**
+  - [ ] 4.1 Create/update API functions
+  - [ ] 4.2 Add mock implementations
+- [ ] **Task 5: Wire navigation and updates**
+  - [ ] 5.1 Update navigation types
+  - [ ] 5.2 Update parent screens
+- [ ] **Task 6: Author tests**
+  - [ ] 6.1 Unit tests for components
+  - [ ] 6.2 Unit tests for hooks/utils
+  - [ ] 6.3 Integration tests
+- [ ] **Task 7: Validation & regression**
+  - [ ] 7.1 Run full test suite — no regressions
+  - [ ] 7.2 Run lint — no errors
+  - [ ] 7.3 Run build — succeeds
+  - [ ] 7.4 Verify all acceptance criteria are met
+
+---
+
+## Dev Agent Record
+
+### Debug Log
+<!-- Developer notes on issues encountered, workarounds, environment quirks -->
+
+### Implementation Plan
+<!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
+
+### Completion Notes
+<!-- Summarize what was actually implemented and tested -->
+
+---
+
+## File List
+<!-- New, modified, and deleted files relative to repo root -->
+
+---
+
+## Change Log
+<!-- Summary of changes per session -->
 ---
 
 ## Completion Checklist
