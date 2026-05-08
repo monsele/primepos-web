@@ -1,0 +1,14 @@
+import type { Loan } from './loan'
+
+export interface Group {
+  id: string
+  groupCode: string
+  groupName: string
+  branchId: string
+  memberCount: number
+}
+
+export interface GroupLoan extends Loan {
+  groupId: string
+  groupName: string
+}

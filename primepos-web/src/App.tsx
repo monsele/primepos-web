@@ -12,7 +12,11 @@ import CashInScreen from './features/cash-in/CashInScreen'
 import CashOutScreen from './features/cash-out/CashOutScreen'
 import NewAccountDepositScreen from './features/new-account/NewAccountDepositScreen'
 import LoanRepaymentScreen from './features/loan-repayment/LoanRepaymentScreen'
+import GroupLoanRepaymentScreen from './features/group-loan-repayment/GroupLoanRepaymentScreen'
+import LoanInquiryScreen from './features/loan-inquiry/LoanInquiryScreen'
+import NewSavingsAccountScreen from './features/new-savings-account/NewSavingsAccountScreen'
 import TransactMenuScreen from './features/transact-menu/TransactMenuScreen'
+import ServicesMenuScreen from './features/services-menu/ServicesMenuScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -86,8 +90,16 @@ function AppShell() {
         return <NewAccountDepositScreen />
       case 'loanRepayment':
         return <LoanRepaymentScreen />
+      case 'groupLoanRepayment':
+        return <GroupLoanRepaymentScreen />
+      case 'loanInquiry':
+        return <LoanInquiryScreen />
       case 'transactMenu':
         return <TransactMenuScreen />
+      case 'servicesMenu':
+        return <ServicesMenuScreen />
+      case 'newSavingsAccount':
+        return <NewSavingsAccountScreen />
       default:
         return (
           <PlaceholderContent

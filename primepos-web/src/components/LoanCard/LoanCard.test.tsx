@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { LoanCard } from './LoanCard'
 import type { Loan } from '../../types/loan'
+import type { GroupLoan } from '../../types/group'
 
 describe('LoanCard', () => {
   it('renders all loan details with correct formatting', () => {
@@ -50,5 +51,27 @@ describe('LoanCard', () => {
     render(<LoanCard loan={loan} />)
 
     expect(screen.getByText('CLOSED')).toBeInTheDocument()
+  })
+
+  it('renders group name for group loans', () => {
+    const groupLoan: GroupLoan = {
+      loanNumber: 'GLN001',
+      customerName: 'Group Loan Account',
+      product: 'Group Lending Product',
+      loanPurpose: 'Working Capital',
+      loanAmount: 10_000_000,
+      currentBalance: 6_500_000,
+      outstandingInterest: 250_000,
+      startDate: '2024-02-01',
+      maturityDate: '2025-02-01',
+      status: 'ACTIVE',
+      groupId: 'GRP001',
+      groupName: 'Test Group Name',
+    }
+
+    render(<LoanCard loan={groupLoan} />)
+
+    expect(screen.getByText('Test Group Name')).toBeInTheDocument()
+    expect(screen.getByText('Group Loan Account')).toBeInTheDocument()
   })
 })

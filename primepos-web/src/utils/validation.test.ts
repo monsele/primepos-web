@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isValidBvn } from './validation'
+import { isValidBvn, isValidDateOfBirth } from './validation'
 
 describe('isValidBvn', () => {
   it('returns true for 11-digit numeric string', () => {
@@ -24,5 +24,19 @@ describe('isValidBvn', () => {
 
   it('returns false for empty string', () => {
     expect(isValidBvn('')).toBe(false)
+  })
+})
+
+describe('isValidDateOfBirth', () => {
+  it('returns true for a valid adult date', () => {
+    expect(isValidDateOfBirth('01/01/1990')).toBe(true)
+  })
+
+  it('returns false for an invalid calendar date', () => {
+    expect(isValidDateOfBirth('31/02/1990')).toBe(false)
+  })
+
+  it('returns false for underage customers', () => {
+    expect(isValidDateOfBirth('01/01/2012')).toBe(false)
   })
 })

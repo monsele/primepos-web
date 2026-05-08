@@ -1,9 +1,14 @@
 import { formatNaira } from '../../utils/currency'
 import type { Loan } from '../../types/loan'
+import type { GroupLoan } from '../../types/group'
 import styles from './LoanCard.module.css'
 
 export interface LoanCardProps {
-  loan: Loan
+  loan: Loan | GroupLoan
+}
+
+function isGroupLoan(loan: Loan | GroupLoan): loan is GroupLoan {
+  return 'groupName' in loan && typeof loan.groupName === 'string'
 }
 
 export function LoanCard({ loan }: LoanCardProps) {
@@ -18,6 +23,9 @@ export function LoanCard({ loan }: LoanCardProps) {
   return (
     <div className={styles.card} data-testid="loan-card">
       <div className={styles.header}>Loan Details</div>
+      {isGroupLoan(loan) && (
+        <div className={styles.groupName}>{loan.groupName}</div>
+      )}
       <div className={styles.name}>{loan.customerName}</div>
       <div className={styles.details}>
         <div className={styles.row}>
