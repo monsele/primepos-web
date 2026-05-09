@@ -1,4 +1,4 @@
-import type { Account } from '../types/account'
+import type { Account, StatementEntry } from '../types/account'
 
 export async function searchAccount(accountNumber: string): Promise<Account> {
   // Mock implementation for MVP
@@ -16,6 +16,62 @@ export async function searchAccount(accountNumber: string): Promise<Account> {
     nuban: '1234567890',
     branchId: 'OGBA001',
   }
+}
+
+const MOCK_STATEMENTS: Record<string, StatementEntry[]> = {
+  '1234567890': [
+    {
+      date: '2026-05-01T09:15:00Z',
+      description: 'Opening Balance',
+      debit: null,
+      credit: 250_000,
+      balance: 250_000,
+    },
+    {
+      date: '2026-05-02T13:42:00Z',
+      description: 'Cash Withdrawal',
+      debit: 50_000,
+      credit: null,
+      balance: 200_000,
+    },
+    {
+      date: '2026-05-04T08:20:00Z',
+      description: 'Transfer From Savings',
+      debit: null,
+      credit: 75_000,
+      balance: 275_000,
+    },
+    {
+      date: '2026-05-05T15:10:00Z',
+      description: 'ATM Withdrawal',
+      debit: 25_000,
+      credit: null,
+      balance: 250_000,
+    },
+  ],
+}
+
+export async function fetchStatement(
+  accountNumber: string,
+  from: string,
+  to: string
+): Promise<StatementEntry[]> {
+  await new Promise((resolve) => setTimeout(resolve, 600))
+
+  if (!accountNumber.trim() || accountNumber === '0000000000') {
+    throw new Error('Account not found')
+  }
+
+  if (to < from) {
+    throw new Error('To date must be after From date')
+  }
+
+  const statement = MOCK_STATEMENTS[accountNumber] ?? MOCK_STATEMENTS['1234567890']
+
+  return statement.filter((entry) => {
+    const entryDate = entry.date.slice(0, 10)
+    return entryDate >= from && entryDate <= to
+  })
 }
 
 export interface NewAccountDepositRequest {

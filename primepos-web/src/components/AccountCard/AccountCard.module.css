@@ -26,15 +26,22 @@
 }
 
 .name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+
+.nuban {
+  font-size: 14px;
+  color: var(--color-text-muted);
   margin-bottom: 1rem;
 }
 
 .balances {
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .balanceItem {
@@ -49,11 +56,11 @@
 }
 
 .value {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-success);
 }
 
-.usable {
+.positive {
   color: var(--color-success);
 }

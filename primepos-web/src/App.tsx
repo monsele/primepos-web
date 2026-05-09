@@ -15,6 +15,8 @@ import LoanRepaymentScreen from './features/loan-repayment/LoanRepaymentScreen'
 import GroupLoanRepaymentScreen from './features/group-loan-repayment/GroupLoanRepaymentScreen'
 import LoanInquiryScreen from './features/loan-inquiry/LoanInquiryScreen'
 import NewSavingsAccountScreen from './features/new-savings-account/NewSavingsAccountScreen'
+import AccountBalanceScreen from './features/account-balance/AccountBalanceScreen'
+import AccountStatementScreen from './features/account-statement/AccountStatementScreen'
 import TransactMenuScreen from './features/transact-menu/TransactMenuScreen'
 import ServicesMenuScreen from './features/services-menu/ServicesMenuScreen'
 import { Header } from './components/Header/Header'
@@ -94,6 +96,10 @@ function AppShell() {
         return <GroupLoanRepaymentScreen />
       case 'loanInquiry':
         return <LoanInquiryScreen />
+      case 'accountBalance':
+        return <AccountBalanceScreen />
+      case 'accountStatement':
+        return <AccountStatementScreen />
       case 'transactMenu':
         return <TransactMenuScreen />
       case 'servicesMenu':
