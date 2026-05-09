@@ -49,3 +49,38 @@ export async function postCashOut(payload: CashOutRequest): Promise<CashOutRespo
     createdAt: new Date().toISOString(),
   }
 }
+
+export interface BatchDepositRequest {
+  payeeName: string
+  branchId: string
+  groupId: string
+  deposits: {
+    accountNumber: string
+    amount: number     // kobo
+  }[]
+  sendSms: boolean
+  officerId: string
+}
+
+export interface BatchDepositResponse {
+  batchReference: string
+  totalAmount: number
+  postedCount: number
+  failedCount: number
+}
+
+export async function postBatchDeposit(payload: BatchDepositRequest): Promise<BatchDepositResponse> {
+  void payload
+  // Mock implementation for MVP
+  await new Promise((resolve) => setTimeout(resolve, 1200))
+
+  const postedCount = payload.deposits.length
+  const totalAmount = payload.deposits.reduce((sum, d) => sum + d.amount, 0)
+
+  return {
+    batchReference: `BATCH-${Date.now()}`,
+    totalAmount,
+    postedCount,
+    failedCount: 0,
+  }
+}

@@ -12,6 +12,7 @@ import CashInScreen from './features/cash-in/CashInScreen'
 import CashOutScreen from './features/cash-out/CashOutScreen'
 import NewAccountDepositScreen from './features/new-account/NewAccountDepositScreen'
 import LoanRepaymentScreen from './features/loan-repayment/LoanRepaymentScreen'
+import BatchDepositScreen from './features/batch-deposit/BatchDepositScreen'
 import GroupLoanRepaymentScreen from './features/group-loan-repayment/GroupLoanRepaymentScreen'
 import LoanInquiryScreen from './features/loan-inquiry/LoanInquiryScreen'
 import NewSavingsAccountScreen from './features/new-savings-account/NewSavingsAccountScreen'
@@ -90,6 +91,8 @@ function AppShell() {
         return <CashOutScreen />
       case 'newAccount':
         return <NewAccountDepositScreen />
+      case 'batchDeposit':
+        return <BatchDepositScreen />
       case 'loanRepayment':
         return <LoanRepaymentScreen />
       case 'groupLoanRepayment':

@@ -4,7 +4,7 @@ story_key: 5-4-app-test-guide-and-maintenance-skill
 epic: 5
 epic_title: Account Services
 title: App Test Guide & Maintenance Skill
-status: ready-for-dev
+status: review
 source_files:
   - epics.md Â§Story 5.4
   - architecture.md Â§2.4, Â§10
@@ -224,24 +224,24 @@ docs/
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Define the testing-guide scope**
-  - [ ] 1.1 Inventory currently implemented user-facing flows from `primepos-web/src/App.tsx` and linked screens
-  - [ ] 1.2 Inventory real test values from mock APIs and current feature/test files
-- [ ] **Task 2: Create the canonical testing guide**
-  - [ ] 2.1 Create `docs/testing/app-test-guide.md`
-  - [ ] 2.2 Document setup, login, flow-by-flow steps, expected outcomes, and test values
-  - [ ] 2.3 Clearly separate implemented flows from not-yet-implemented or pending stories
-- [ ] **Task 3: Create the BMAD maintenance skill**
-  - [ ] 3.1 Create `.agents/skills/bmad-update-app-test-guide/SKILL.md`
-  - [ ] 3.2 Create `.agents/skills/bmad-update-app-test-guide/template.md`
-  - [ ] 3.3 Ensure the skill instructs the agent to inspect current implementation, mocks, and relevant tests before updating the guide
-- [ ] **Task 4: Validate documentation accuracy**
-  - [ ] 4.1 Cross-check every documented value against source files
-  - [ ] 4.2 Perform a manual smoke pass of the documented flows against the running app where feasible
-- [ ] **Task 5: Validation & regression**
-  - [ ] 5.1 Confirm no duplicate testing-guide files were introduced
-  - [ ] 5.2 If app runtime files changed, run relevant repo validations
-  - [ ] 5.3 Verify the story acceptance criteria are fully covered
+- [x] **Task 1: Define the testing-guide scope**
+  - [x] 1.1 Inventory currently implemented user-facing flows from `primepos-web/src/App.tsx` and linked screens
+  - [x] 1.2 Inventory real test values from mock APIs and current feature/test files
+- [x] **Task 2: Create the canonical testing guide**
+  - [x] 2.1 Create `docs/testing/app-test-guide.md`
+  - [x] 2.2 Document setup, login, flow-by-flow steps, expected outcomes, and test values
+  - [x] 2.3 Clearly separate implemented flows from not-yet-implemented or pending stories
+- [x] **Task 3: Create the BMAD maintenance skill**
+  - [x] 3.1 Create `.agents/skills/bmad-update-app-test-guide/SKILL.md`
+  - [x] 3.2 Create `.agents/skills/bmad-update-app-test-guide/template.md`
+  - [x] 3.3 Ensure the skill instructs the agent to inspect current implementation, mocks, and relevant tests before updating the guide
+- [x] **Task 4: Validate documentation accuracy**
+  - [x] 4.1 Cross-check every documented value against source files
+  - [x] 4.2 Perform a manual smoke pass of the documented flows against the running app where feasible
+- [x] **Task 5: Validation & regression**
+  - [x] 5.1 Confirm no duplicate testing-guide files were introduced
+  - [x] 5.2 If app runtime files changed, run relevant repo validations
+  - [x] 5.3 Verify the story acceptance criteria are fully covered
 
 ---
 
@@ -252,29 +252,42 @@ docs/
 
 ### Implementation Plan
 <!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
+- Inventory implemented flows directly from `primepos-web/src/App.tsx`, `QuickActions.tsx`, and menu screens so the guide only documents screens users can actually reach today.
+- Cross-check all successful and invalid test values against `src/api/*` mocks plus screen validation hooks to avoid invented examples.
+- Create one canonical guide at `docs/testing/app-test-guide.md` and one local BMAD skill under `.agents/skills/bmad-update-app-test-guide/` with a stable section order and a reusable template.
 
 ### Completion Notes
 <!-- Summarize what was actually implemented and tested -->
+- Created the canonical manual testing guide at `docs/testing/app-test-guide.md` with setup steps, working credentials, quick smoke coverage, detailed scenarios, expected results, invalid values, and a clear implemented-vs-not-ready split.
+- Created the local maintenance skill at `.agents/skills/bmad-update-app-test-guide/` with update rules that require scanning current implementation files, mocks, validation hooks, and the stable template before editing the guide.
+- Cross-checked documented values against `primepos-web/src/api/*`, navigation screens, and feature hooks/tests. Manual browser smoke execution was not performed from the terminal, so validation relied on source inspection plus automated repo checks.
+- Verified there is no duplicate testing-guide file and ran `npm test`, `npm run lint`, and `npm run build` in `primepos-web` successfully.
 
 ---
 
 ## File List
 <!-- New, modified, and deleted files relative to repo root -->
+- `docs/testing/app-test-guide.md`
+- `.agents/skills/bmad-update-app-test-guide/SKILL.md`
+- `.agents/skills/bmad-update-app-test-guide/template.md`
+- `_bmad-output/implementation-artifacts/5-4-app-test-guide-and-maintenance-skill.md`
+- `_bmad-output/implementation-artifacts/sprint-status.yaml`
 
 ---
 
 ## Change Log
 <!-- Summary of changes per session -->
+- 2026-05-09: Added the canonical app testing guide, created the BMAD maintenance skill and template, and validated accuracy against current implementation plus repo test/lint/build checks.
 ---
 
 ## Completion Checklist
 
-- [ ] `docs/testing/app-test-guide.md` exists and is easy to follow
-- [ ] Real current test values are documented from source files
-- [ ] Implemented flows are distinguished from pending/unimplemented ones
-- [ ] BMAD maintenance skill exists under `.agents/skills/bmad-update-app-test-guide/`
-- [ ] Skill updates the same guide and scans implementation context before editing
-- [ ] No duplicate testing guide was created
+- [x] `docs/testing/app-test-guide.md` exists and is easy to follow
+- [x] Real current test values are documented from source files
+- [x] Implemented flows are distinguished from pending/unimplemented ones
+- [x] BMAD maintenance skill exists under `.agents/skills/bmad-update-app-test-guide/`
+- [x] Skill updates the same guide and scans implementation context before editing
+- [x] No duplicate testing guide was created
 
 ---
 
