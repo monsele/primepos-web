@@ -20,6 +20,8 @@ import AccountBalanceScreen from './features/account-balance/AccountBalanceScree
 import AccountStatementScreen from './features/account-statement/AccountStatementScreen'
 import TransactMenuScreen from './features/transact-menu/TransactMenuScreen'
 import ServicesMenuScreen from './features/services-menu/ServicesMenuScreen'
+import CardTransactionsScreen from './features/card-transactions/CardTransactionsScreen'
+import { ReportsDashboardScreen } from './features/reports/ReportsDashboardScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -107,8 +109,12 @@ function AppShell() {
         return <TransactMenuScreen />
       case 'servicesMenu':
         return <ServicesMenuScreen />
+      case 'cardTransactions':
+        return <CardTransactionsScreen />
       case 'newSavingsAccount':
         return <NewSavingsAccountScreen />
+      case 'reports':
+        return <ReportsDashboardScreen />
       default:
         return (
           <PlaceholderContent

@@ -24,7 +24,7 @@
 #   - done: Retrospective has been completed
 
 generated: 2026-05-04T11:52:37
-last_updated: 2026-05-09T08:22:00
+last_updated: 2026-05-09T09:56:00
 project: prime-app
 project_key: NOKEY
 tracking_system: file-system
@@ -60,10 +60,10 @@ development_status:
   epic-5-retrospective: optional
   epic-6: in-progress
    6-1-batch-bbls-deposit: review
-  6-2-card-transactions: ready-for-dev
+  6-2-card-transactions: review
   epic-6-retrospective: optional
   epic-7: in-progress
-  7-1-reports-dashboard: ready-for-dev
+  7-1-reports-dashboard: review
   7-2-detailed-reports-placeholder: ready-for-dev
   epic-7-retrospective: optional
   epic-8: in-progress
