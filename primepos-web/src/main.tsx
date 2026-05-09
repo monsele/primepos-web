@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { initDB } from './services/storage/db'
 import './index.css'
 import App from './App.tsx'
 
@@ -13,7 +14,10 @@ const queryClient = new QueryClient({
   },
 })
 
-// Register service worker for PWA offline support
+// Initialize IndexedDB for offline storage
+initDB().catch((err) => {
+  console.warn('IndexedDB initialization failed:', err)
+})
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker

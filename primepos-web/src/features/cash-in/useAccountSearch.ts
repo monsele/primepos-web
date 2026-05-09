@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { searchAccount } from '../../api/accounts'
+import { cacheAccount } from '../../services/cacheStrategy'
 import type { Account } from '../../types/account'
 
 const QUERY_KEY = 'account-search'
@@ -28,6 +29,7 @@ export function useAccountSearch(): UseAccountSearchReturn {
           queryFn: () => searchAccount(accountNumber),
           staleTime: 5 * 60 * 1000,
         })
+        await cacheAccount(result)
         setAccount(result)
         return result
       } catch (err) {

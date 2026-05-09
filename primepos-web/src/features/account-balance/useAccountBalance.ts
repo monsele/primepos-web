@@ -1,6 +1,11 @@
 import { useState, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { searchAccount } from '../../api/accounts'
+import {
+  cacheAccount,
+  getCachedAccount,
+} from '../../services/cacheStrategy'
+import { useNetworkStatus } from '../../hooks/useNetworkStatus'
 import type { Account } from '../../types/account'
 
 const QUERY_KEY = 'account-search'
@@ -16,6 +21,7 @@ export interface UseAccountBalanceReturn {
 
 export function useAccountBalance(): UseAccountBalanceReturn {
   const queryClient = useQueryClient()
+  const { isOnline } = useNetworkStatus()
   const [account, setAccount] = useState<Account | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -34,18 +40,22 @@ export function useAccountBalance(): UseAccountBalanceReturn {
       setIsCached(false)
 
       try {
-        const existingData = queryClient.getQueryData<Account>([
-          QUERY_KEY,
-          accountNumber,
-        ])
+        if (!isOnline) {
+          const cached = await getCachedAccount(accountNumber)
+          if (cached) {
+            setAccount(cached)
+            setIsCached(true)
+            return cached
+          }
+          throw new Error('No cached data available')
+        }
 
         const result = await queryClient.fetchQuery<Account>({
           queryKey: [QUERY_KEY, accountNumber],
           queryFn: () => searchAccount(accountNumber),
           staleTime: 5 * 60 * 1000,
         })
-
-        setIsCached(!!existingData)
+        await cacheAccount(result)
         setAccount(result)
         return result
       } catch (err) {
@@ -58,7 +68,7 @@ export function useAccountBalance(): UseAccountBalanceReturn {
         setIsLoading(false)
       }
     },
-    [queryClient]
+    [queryClient, isOnline]
   )
 
   return { account, isLoading, error, isCached, search, reset }

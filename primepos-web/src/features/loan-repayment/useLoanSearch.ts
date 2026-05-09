@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { searchLoan } from '../../api/loans'
+import { cacheLoan } from '../../services/cacheStrategy'
 import type { Loan } from '../../types/loan'
 
 const QUERY_KEY = 'loan-search'
@@ -28,6 +29,7 @@ export function useLoanSearch(): UseLoanSearchReturn {
           queryFn: () => searchLoan(loanNumber),
           staleTime: 5 * 60 * 1000,
         })
+        await cacheLoan(result)
         setLoan(result)
         return result
       } catch (err) {

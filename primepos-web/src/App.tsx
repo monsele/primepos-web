@@ -4,7 +4,9 @@ import { SyncProvider } from './contexts/SyncContext'
 import { NavigationProvider, useNavigation } from './contexts/NavigationContext'
 import { ToastProvider } from './components/Toast/ToastProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useConnectionTransition } from './hooks/useConnectionTransition'
+import { useSync } from './contexts/useSync'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
@@ -27,6 +29,7 @@ import ELedgerReportScreen from './features/reports/ELedgerReportScreen'
 import LoParReportScreen from './features/reports/LoParReportScreen'
 import TransactionReportsScreen from './features/reports/TransactionReportsScreen'
 import LoPerformanceReportScreen from './features/reports/LoPerformanceReportScreen'
+import { UnpostedTransactionsScreen } from './features/unposted/UnpostedTransactionsScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -130,6 +133,8 @@ function AppShell() {
         return <TransactionReportsScreen />
       case 'loPerformanceReport':
         return <LoPerformanceReportScreen />
+      case 'unpostedTransactions':
+        return <UnpostedTransactionsScreen />
       default:
         return (
           <PlaceholderContent
@@ -154,6 +159,14 @@ function AppShell() {
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth()
+  const { cameOnline } = useConnectionTransition()
+  const sync = useSync()
+
+  useEffect(() => {
+    if (cameOnline && sync.pendingCount > 0) {
+      sync.processQueue()
+    }
+  }, [cameOnline, sync])
 
   if (isLoading) {
     return <LoadingSpinner fullScreen />

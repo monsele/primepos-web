@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { searchLoan } from '../../api/loans'
+import { cacheLoan, getCachedLoan } from '../../services/cacheStrategy'
+import { useNetworkStatus } from '../../hooks/useNetworkStatus'
 import type { Loan } from '../../types/loan'
 
 const QUERY_KEY = 'loan-search'
@@ -15,6 +17,7 @@ export interface UseLoanInquiryReturn {
 
 export function useLoanInquiry(): UseLoanInquiryReturn {
   const queryClient = useQueryClient()
+  const { isOnline } = useNetworkStatus()
   const [loan, setLoan] = useState<Loan | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -27,20 +30,22 @@ export function useLoanInquiry(): UseLoanInquiryReturn {
       setIsCached(false)
 
       try {
-        // Check if data already exists in cache before fetching
-        const existingData = queryClient.getQueryData<Loan>([
-          QUERY_KEY,
-          loanNumber,
-        ])
+        if (!isOnline) {
+          const cached = await getCachedLoan(loanNumber)
+          if (cached) {
+            setLoan(cached)
+            setIsCached(true)
+            return cached
+          }
+          throw new Error('No cached data available')
+        }
 
         const result = await queryClient.fetchQuery<Loan>({
           queryKey: [QUERY_KEY, loanNumber],
           queryFn: () => searchLoan(loanNumber),
           staleTime: 5 * 60 * 1000,
         })
-
-        // If data existed before fetch, it was served from cache
-        setIsCached(!!existingData)
+        await cacheLoan(result)
         setLoan(result)
         return result
       } catch (err) {
@@ -53,7 +58,7 @@ export function useLoanInquiry(): UseLoanInquiryReturn {
         setIsLoading(false)
       }
     },
-    [queryClient]
+    [queryClient, isOnline]
   )
 
   return { loan, isLoading, error, isCached, search }

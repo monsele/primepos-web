@@ -54,7 +54,7 @@ describe('useAccountBalance', () => {
     expect(result.current.isCached).toBe(false)
   })
 
-  it('marks results as cached when the same account is searched again', async () => {
+  it('keeps isCached false when searching same account twice online', async () => {
     const mockAccount = {
       accountNumber: '1234567890',
       accountName: 'Test User',
@@ -79,11 +79,13 @@ describe('useAccountBalance', () => {
       await result.current.search('1234567890')
     })
 
+    expect(result.current.isCached).toBe(false)
+
     await act(async () => {
       await result.current.search('1234567890')
     })
 
-    expect(result.current.isCached).toBe(true)
+    expect(result.current.isCached).toBe(false)
   })
 
   it('clears the current result and cached state on reset', async () => {
