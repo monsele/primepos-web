@@ -4,7 +4,7 @@ story_key: 7-2-detailed-reports
 epic: 7
 epic_title: Reports & Analytics
 title: Detailed Reports (Placeholder)
-status: ready-for-dev
+status: review
 source_files:
   - prd.md §4.7
   - architecture.md §3.1
@@ -136,30 +136,30 @@ src/
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic** (N/A — placeholder screens have no data fetching)
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services** (N/A — placeholder screens have no backend)
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types (already existed from Story 7.1)
+  - [x] 5.2 Update parent screens (App.tsx switch cases added)
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils (N/A)
+  - [x] 6.3 Integration tests (N/A — placeholder screens, covered by unit tests)
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions (294 tests passed)
+  - [x] 7.2 Run lint — no errors (4 pre-existing warnings unrelated)
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
@@ -169,30 +169,42 @@ src/
 <!-- Developer notes on issues encountered, workarounds, environment quirks -->
 
 ### Implementation Plan
-<!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
+Created a reusable `PlaceholderScreen` component with icon, title, and subtitle props. Each of the 5 report types uses this component with specific content. Navigation types already existed from Story 7.1; only App.tsx needed switch case entries. Tasks 3 (hooks) and 4 (API) are not applicable for placeholder screens — no data fetching or backend integration is needed.
 
 ### Completion Notes
-<!-- Summarize what was actually implemented and tested -->
+Implemented 5 placeholder report detail screens using a shared `PlaceholderScreen` component. All screens display descriptive icons, titles, and "available in future update" messages. Added 2 new test files (PlaceholderScreen.test.tsx, LoansBookedReportScreen.test.tsx) with 3 tests total. Full test suite passes (294 tests, 0 regressions). Production build succeeds. All acceptance criteria satisfied.
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+
+| Path | Action |
+|------|--------|
+| `src/components/PlaceholderScreen/PlaceholderScreen.tsx` | NEW |
+| `src/components/PlaceholderScreen/PlaceholderScreen.module.css` | NEW |
+| `src/components/PlaceholderScreen/PlaceholderScreen.test.tsx` | NEW |
+| `src/features/reports/LoansBookedReportScreen.tsx` | NEW |
+| `src/features/reports/ELedgerReportScreen.tsx` | NEW |
+| `src/features/reports/LoParReportScreen.tsx` | NEW |
+| `src/features/reports/TransactionReportsScreen.tsx` | NEW |
+| `src/features/reports/LoPerformanceReportScreen.tsx` | NEW |
+| `src/features/reports/LoansBookedReportScreen.test.tsx` | NEW |
+| `src/App.tsx` | MODIFIED |
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- 2026-05-09: Implemented 5 placeholder report screens with reusable PlaceholderScreen component. Updated App.tsx with navigation switch cases. Added unit tests. Build + test suite pass. Story complete.
 ---
 
 ## Completion Checklist
 
-- [ ] 5 placeholder report screens
-- [ ] Reusable `PlaceholderScreen` component
-- [ ] Each screen has appropriate title and icon
-- [ ] Unit tests
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] 5 placeholder report screens
+- [x] Reusable `PlaceholderScreen` component
+- [x] Each screen has appropriate title and icon
+- [x] Unit tests
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 

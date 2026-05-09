@@ -22,6 +22,11 @@ import TransactMenuScreen from './features/transact-menu/TransactMenuScreen'
 import ServicesMenuScreen from './features/services-menu/ServicesMenuScreen'
 import CardTransactionsScreen from './features/card-transactions/CardTransactionsScreen'
 import { ReportsDashboardScreen } from './features/reports/ReportsDashboardScreen'
+import LoansBookedReportScreen from './features/reports/LoansBookedReportScreen'
+import ELedgerReportScreen from './features/reports/ELedgerReportScreen'
+import LoParReportScreen from './features/reports/LoParReportScreen'
+import TransactionReportsScreen from './features/reports/TransactionReportsScreen'
+import LoPerformanceReportScreen from './features/reports/LoPerformanceReportScreen'
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
@@ -115,6 +120,16 @@ function AppShell() {
         return <NewSavingsAccountScreen />
       case 'reports':
         return <ReportsDashboardScreen />
+      case 'loansBookedReport':
+        return <LoansBookedReportScreen />
+      case 'eLedgerReport':
+        return <ELedgerReportScreen />
+      case 'loParReport':
+        return <LoParReportScreen />
+      case 'transactionReports':
+        return <TransactionReportsScreen />
+      case 'loPerformanceReport':
+        return <LoPerformanceReportScreen />
       default:
         return (
           <PlaceholderContent
