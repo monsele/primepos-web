@@ -81,6 +81,8 @@ export default defineConfig({
         ],
         skipWaiting: true,
         clientsClaim: true,
+        navigateFallback: '/offline.html',
+        navigateFallbackDenylist: [/^\/api\//],
       },
       devOptions: {
         enabled: true,

@@ -1,0 +1,46 @@
+.banner {
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.text {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 600;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.button {
+  background-color: white;
+  color: var(--color-primary);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #f0f0f0;
+}
+
+.dismiss {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.dismiss:hover {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 50%;
+}

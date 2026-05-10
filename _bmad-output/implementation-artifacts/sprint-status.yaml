@@ -24,7 +24,7 @@
 #   - done: Retrospective has been completed
 
 generated: 2026-05-04T11:52:37
-last_updated: 2026-05-09T21:16:00
+last_updated: 2026-05-10T17:03:00
 project: prime-app
 project_key: NOKEY
 tracking_system: file-system
@@ -48,29 +48,29 @@ development_status:
   3-4-cash-transactions-menu: done
   epic-3-retrospective: optional
   epic-4: in-progress
-  4-1-loan-repayment: review
-  4-2-group-loan-repayment: in-progress
-  4-3-loan-inquiry: review
+   4-1-loan-repayment: done
+   4-2-group-loan-repayment: in-progress
+   4-3-loan-inquiry: done
   epic-4-retrospective: optional
   epic-5: in-progress
-  5-1-new-savings-account-3-step-wizard: review
-  5-2-account-balance-inquiry: review
-  5-3-account-statement: review
-  5-4-app-test-guide-and-maintenance-skill: review
+   5-1-new-savings-account-3-step-wizard: done
+   5-2-account-balance-inquiry: done
+   5-3-account-statement: done
+   5-4-app-test-guide-and-maintenance-skill: done
   epic-5-retrospective: optional
   epic-6: in-progress
-   6-1-batch-bbls-deposit: review
-  6-2-card-transactions: review
+   6-1-batch-bbls-deposit: done
+   6-2-card-transactions: done
   epic-6-retrospective: optional
   epic-7: in-progress
-  7-1-reports-dashboard: review
-  7-2-detailed-reports-placeholder: review
+   7-1-reports-dashboard: done
+   7-2-detailed-reports-placeholder: done
   epic-7-retrospective: optional
-epic-8: in-progress
-   8-1-indexeddb-local-storage: review
-   8-2-transaction-queue-manager: review
-    8-3-offline-data-cache: done
-  8-4-service-worker-pwa-update-flow: ready-for-dev
+  epic-8: in-progress
+   8-1-indexeddb-local-storage: done
+   8-2-transaction-queue-manager: done
+   8-3-offline-data-cache: done
+   8-4-service-worker-pwa-update-flow: done
   epic-8-retrospective: optional
   epic-9: in-progress
   9-1-menu-offline-data: ready-for-dev

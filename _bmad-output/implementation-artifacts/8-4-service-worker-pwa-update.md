@@ -4,7 +4,7 @@ story_key: 8-4-service-worker-pwa-update
 epic: 8
 epic_title: Offline-First Infrastructure
 title: Service Worker & PWA Update Flow
-status: ready-for-dev
+status: done
 source_files:
   - prd.md §7
   - architecture.md §8
@@ -233,10 +233,30 @@ src/
 ### Completion Notes
 <!-- Summarize what was actually implemented and tested -->
 
+- Created `usePWAUpdate` hook using `virtual:pwa-register/react`'s `useRegisterSW`
+- Created `UpdateBanner` component with "Update available" text, Reload button, and optional dismiss button
+- Integrated both into `AppShell` in `App.tsx` (renders below header)
+- Removed redundant manual `navigator.serviceWorker.register('/sw.js')` from `main.tsx` — `vite-plugin-pwa` handles registration automatically
+- Added offline fallback page at `public/offline.html` with "You are offline" message
+- Added `navigateFallback: '/offline.html'` and `navigateFallbackDenylist` to Workbox config
+- Created `src/vite-env.d.ts` with reference to `vite-plugin-pwa/client` types
+- Updated `UpdateBanner` to accept optional `setNeedRefresh` prop (for compatibility with `DashboardScreen` usage)
+- ESLint: 0 errors, 4 pre-existing warnings (unrelated)
+- TypeScript (`npx tsc --noEmit`): 0 errors
+
 ---
 
 ## File List
 <!-- New, modified, and deleted files relative to repo root -->
+
+- `primepos-web/src/hooks/usePWAUpdate.ts` — NEW: Hook wrapping `virtual:pwa-register/react` for SW update detection
+- `primepos-web/src/components/UpdateBanner/UpdateBanner.tsx` — NEW: Banner component with "Update available" + Reload + dismiss
+- `primepos-web/src/components/UpdateBanner/UpdateBanner.module.css` — NEW: Banner styles
+- `primepos-web/public/offline.html` — NEW: Offline fallback page
+- `primepos-web/src/vite-env.d.ts` — NEW: Reference types for `vite-plugin-pwa/client`
+- `primepos-web/src/App.tsx` — MODIFIED: Integrated `usePWAUpdate` + `UpdateBanner` into `AppShell`
+- `primepos-web/src/main.tsx` — MODIFIED: Removed redundant manual SW registration
+- `primepos-web/vite.config.ts` — MODIFIED: Added `navigateFallback` and `navigateFallbackDenylist`
 
 ---
 

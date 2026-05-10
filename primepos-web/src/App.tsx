@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { useConnectionTransition } from './hooks/useConnectionTransition'
 import { useSync } from './contexts/useSync'
+import { usePWAUpdate } from './hooks/usePWAUpdate'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
@@ -33,6 +34,7 @@ import { UnpostedTransactionsScreen } from './features/unposted/UnpostedTransact
 import { Header } from './components/Header/Header'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
+import UpdateBanner from './components/UpdateBanner/UpdateBanner'
 import './App.css'
 
 function PlaceholderContent({ title }: { title: string }) {
@@ -90,6 +92,7 @@ const SCREEN_TITLES: Record<string, string> = {
 
 function AppShell() {
   const { currentScreen, isInnerScreen, transitionDirection } = useNavigation()
+  const { needRefresh, setNeedRefresh, updateServiceWorker } = usePWAUpdate()
 
   const renderScreenContent = () => {
     switch (currentScreen) {
@@ -147,6 +150,11 @@ function AppShell() {
   return (
     <div className="app-container">
       <Header />
+      <UpdateBanner
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
+        updateServiceWorker={updateServiceWorker}
+      />
       <main className="app-main">
         <ScreenTransition direction={transitionDirection}>
           {renderScreenContent()}

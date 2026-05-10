@@ -3,7 +3,6 @@ import { useNetworkStatus } from '../../hooks/useNetworkStatus'
 import { useConnectionTransition } from '../../hooks/useConnectionTransition'
 import { useToast } from '../../components/Toast/useToast'
 import { useEffect } from 'react'
-import OfflineIndicator from '../../components/OfflineIndicator'
 import { ConnectionBanner } from '../../components/ConnectionBanner/ConnectionBanner'
 import { KPICards } from './KPICards'
 import { QuickActions } from './QuickActions'
@@ -50,7 +49,6 @@ export function DashboardScreen() {
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className={styles.dashboard} data-testid="dashboard-screen">
-        <OfflineIndicator />
         <ConnectionBanner isOnline={isOnline} />
 
         <section className={styles.hero}>
