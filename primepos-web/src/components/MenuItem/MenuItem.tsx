@@ -5,6 +5,7 @@ export interface MenuItemProps {
   subtitle?: string
   onClick?: () => void
   disabled?: boolean
+  badgeCount?: number
 }
 
 export default function MenuItem({
@@ -12,6 +13,7 @@ export default function MenuItem({
   subtitle,
   onClick,
   disabled = false,
+  badgeCount,
 }: MenuItemProps) {
   return (
     <button
@@ -25,9 +27,16 @@ export default function MenuItem({
         <span className={styles.label}>{label}</span>
         {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
       </div>
-      <span className={styles.arrow} aria-hidden="true">
-        →
-      </span>
+      <div className={styles.rightSection}>
+        {badgeCount !== undefined && badgeCount > 0 && (
+          <span className={styles.badge} data-testid="badge">
+            {badgeCount}
+          </span>
+        )}
+        <span className={styles.arrow} aria-hidden="true">
+          →
+        </span>
+      </div>
     </button>
   )
 }

@@ -27,4 +27,24 @@ describe('MenuItem', () => {
 
     expect(onClick).toHaveBeenCalled()
   })
+
+  it('renders badge with count', () => {
+    render(<MenuItem label="Unposted" badgeCount={5} />)
+    expect(screen.getByTestId('badge')).toHaveTextContent('5')
+  })
+
+  it('does not render badge when count is 0', () => {
+    render(<MenuItem label="Unposted" badgeCount={0} />)
+    expect(screen.queryByTestId('badge')).not.toBeInTheDocument()
+  })
+
+  it('does not render badge when badgeCount is undefined', () => {
+    render(<MenuItem label="Unposted" />)
+    expect(screen.queryByTestId('badge')).not.toBeInTheDocument()
+  })
+
+  it('renders badge with large count', () => {
+    render(<MenuItem label="Unposted" badgeCount={150} />)
+    expect(screen.getByTestId('badge')).toHaveTextContent('150')
+  })
 })

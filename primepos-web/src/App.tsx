@@ -11,6 +11,7 @@ import { usePWAUpdate } from './hooks/usePWAUpdate'
 import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
+import MenuScreen from './features/menu/MenuScreen'
 import CashInScreen from './features/cash-in/CashInScreen'
 import CashOutScreen from './features/cash-out/CashOutScreen'
 import NewAccountDepositScreen from './features/new-account/NewAccountDepositScreen'
@@ -138,6 +139,8 @@ function AppShell() {
         return <LoPerformanceReportScreen />
       case 'unpostedTransactions':
         return <UnpostedTransactionsScreen />
+      case 'more':
+        return <MenuScreen />
       default:
         return (
           <PlaceholderContent
