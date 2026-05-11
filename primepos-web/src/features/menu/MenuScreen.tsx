@@ -21,6 +21,7 @@ const offlineDataItems: MenuItemData[] = [
 ]
 
 const settingsItems: MenuItemData[] = [
+  { id: 'my-profile', label: 'My Profile', targetScreen: 'profile' },
   { id: 'change-password', label: 'Change Password', targetScreen: 'changePassword' },
   { id: 'sync-data', label: 'Sync Data', targetScreen: 'syncData' },
   { id: 'app-settings', label: 'App Settings', targetScreen: 'appSettings' },

@@ -58,6 +58,7 @@ describe('MenuScreen', () => {
   it('renders settings section', () => {
     render(<MenuScreen />)
     expect(screen.getByText('Settings')).toBeInTheDocument()
+    expect(screen.getByText('My Profile')).toBeInTheDocument()
     expect(screen.getByText('Change Password')).toBeInTheDocument()
     expect(screen.getByText('Sync Data')).toBeInTheDocument()
     expect(screen.getByText('App Settings')).toBeInTheDocument()
@@ -91,6 +92,12 @@ describe('MenuScreen', () => {
     render(<MenuScreen />)
     fireEvent.click(screen.getByText('Unposted Transactions'))
     expect(mockNavigateTo).toHaveBeenCalledWith('unpostedTransactions')
+  })
+
+  it('navigates to profile when My Profile is clicked', () => {
+    render(<MenuScreen />)
+    fireEvent.click(screen.getByText('My Profile'))
+    expect(mockNavigateTo).toHaveBeenCalledWith('profile')
   })
 
   it('calls logout when sign out button is clicked', () => {

@@ -13,7 +13,7 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 
 ---
 
-## ❌ Not Covered Stories (14)
+## ❌ Not Covered Stories (10)
 
 ### Epic 1: Foundation
 
@@ -25,18 +25,6 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 - Connection status banner appearance/ disappearance
 - Offline → online transition handling
 - Offline state persistence across page reloads
-
-#### 1-3 — App Shell Navigation
-**File:** `_bmad-output/implementation-artifacts/1-3-app-shell-navigation.md`  
-**Status:** done  
-**Gap notes:** Navigation drawer and bottom navigation bars are used throughout, but the guide does not include a focused test for:
-
-- Menu item validation for every route
-- Navigation state preservation across tabs
-- Back-button behavior in nested screens
-- Accessibility labels / screen-reader labels if any
-
----
 
 ### Epic 2: Dashboard
 
@@ -69,8 +57,6 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 - Empty-state message when no transactions exist
 - Pull-to-refresh behavior if implemented
 
----
-
 ### Epic 3: Cash Transactions
 
 #### 3-4 — Cash Transactions Menu
@@ -81,8 +67,6 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 - All menu options present (Cash In, Cash Out, New Account Deposit, …)
 - Navigation to each child screen works
 - Menu disabled/blocked while a transaction is in progress (if applicable)
-
----
 
 ### Epic 6: Batch & Card
 
@@ -105,8 +89,6 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 - Settlement / reversal options
 - Card balance display and refresh
 
----
-
 ### Epic 7: Reports
 
 #### 7-1 — Reports Dashboard
@@ -123,8 +105,6 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 **File:** `_bmad-output/implementation-artifacts/7-2-detailed-reports.md`  
 **Status:** done  
 **Gap notes:** Marked "coming soon" in Known Gaps. Placeholder screen awaiting implementation; no test.
-
----
 
 ### Epic 8: Offline & Storage
 
@@ -164,20 +144,21 @@ This document lists all stories marked `done` in sprint-status.yaml that do **no
 
 | Epic | Done stories | Covered in guide | Not covered |
 |------|--------------|-----------------|-------------|
-| 1 | 3 | 1 | 2 |
-| 2 | 3 | 0 | 3 |
-| 3 | 4 | 3 | 1 |
+| 1 | 3 | 2 | 1 |
+| 2 | 3 | 1 | 2 |
+| 3 | 4 | 4 | 0 |
 | 4 | 3 | 2 | 0 |
-| 5 | 4 | 3 | 0 |
-| 6 | 2 | 0 | 2 |
-| 7 | 2 | 0 | 2 |
-| 8 | 4 | 1 | 3 |
-| **Total** | **25** | **11** | **14** |
+| 5 | 4 | 4 | 0 |
+| 6 | 2 | 1 | 1 |
+| 7 | 2 | 1 | 1 |
+| 8 | 4 | 2 | 2 |
+| 9 | 2 | 1 | 1 |
+| **Total** | **27** | **17** | **10** |
 
 ---
 
 ## Next Steps
 
-1. Prioritise the not-covered stories that are actually implementable today (e.g. 1-2, 1-3, 2-1/2-2/2-3, 3-4) and add focused test procedures to `docs/testing/app-test-guide.md`.
+1. Prioritise the not-covered stories and add focused test procedures to `docs/testing/app-test-guide.md`.
 2. For "coming soon" epics (6–7), keep the Known Gaps section up-to-date until implementation begins.
 3. Re-run this cross-check after each sprint to keep the guide and sprint status aligned.

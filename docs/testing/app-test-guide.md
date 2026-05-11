@@ -1,6 +1,7 @@
 # PrimePOS App Test Guide
 
 Last checked: 2026-05-10
+Last updated: 2026-05-10 (added Menu Screen section)
 
 ## Local Setup
 
@@ -67,13 +68,14 @@ These flows are wired in the app today and are covered below:
 - Account Statement
 - Reports Dashboard
 - Unposted Transactions
+- Menu Screen
+- My Profile
 
 Also implemented but outside this guide's main checklist:
 
 - Group Loan Repayment (wired in App.tsx but not accessible from current UI menus)
 - Batch BBLS Deposit (accessible via Transact Menu, basic UI implemented but limited mock data)
 - Card Transactions (accessible via Transact Menu, placeholder requiring POS terminal)
-- Detailed Reports (all 5 sub-report screens are placeholders awaiting implementation)
 
 ## Quick Flow Checklist
 
@@ -83,7 +85,7 @@ Use this section for a fast smoke pass.
 |------|------------------|------------------|-----------------|
 | Login | Login screen | `YB101375` / `password` | Dashboard opens for Yahaya Ahmed |
 | Connection Status | Dashboard header / banner | Observe Online/Offline pill and banner | Pill shows "Online", banner shows "Connected — All features available" |
-| Bottom Nav | Bottom of screen (main tabs only) | Tap each tab | Home → Dashboard, Transact → Transact Menu, Services → Services Menu, Reports → Reports Dashboard, More → Placeholder |
+| Bottom Nav | Bottom of screen (main tabs only) | Tap each tab | Home → Dashboard, Transact → Transact Menu, Services → Services Menu, Reports → Reports Dashboard, More → Menu Screen |
 | Back Navigation | Any inner screen header | Tap ← button | Returns to previous screen with pop animation |
 | Dashboard KPIs | Dashboard (visible after login) | KPIs auto-load | Collections ₦248,500.00, Transactions 34, Pending Sync 0 |
 | Quick Actions | Dashboard | Tap each quick action | Cash In → Cash In screen, Cash Out → Cash Out screen, Loan Repayment → Loan Repayment, New Account → New Account Deposit |
@@ -99,6 +101,7 @@ Use this section for a fast smoke pass.
 | Account Statement | `Services` → `Account Statement` | Account `1234567890`, From `2026-05-01`, To `2026-05-06` | Statement table loads with 4 entries |
 | Reports Dashboard | Bottom Nav → Reports | Open Reports tab | 2 KPI cards (Total Collections, Transactions Today) + 5 report type menu items |
 | Unposted Transactions | KPI Pending Sync card (when count > 0) or via route | View list | Shows queued/offline transactions with POST ALL button |
+| My Profile | Menu (More tab) → Settings section → `My Profile` | View officer details | Profile screen shows Name, Staff ID, Mobile, Email, Branch, Department, Till Account, System Date |
 
 ## Detailed Flow Scenarios
 
@@ -129,7 +132,7 @@ Bottom Navigation Bar (visible on main tab screens: Home, Transact, Services, Re
 | Transact | ⚡ | Transact Menu |
 | Services | ⊞ | Services Menu |
 | Reports | 📊 | Reports Dashboard |
-| More | ⋯ | More (Placeholder) |
+| More | ⋯ | Menu Screen |
 
 Navigation behaviors:
 
@@ -525,6 +528,71 @@ Supports pull-to-refresh to reload the queue.
 
 Source: `src/features/unposted/UnpostedTransactionsScreen.tsx`, `src/services/syncEngine.ts`, `src/services/storage/transactions.ts`
 
+### My Profile
+
+Navigation:
+
+- Login → Dashboard → More tab → `More` menu in bottom nav (not yet fully implemented for direct access)
+- Currently accessible via Menu screen (Menu → Settings section → My Profile)
+
+Successful test:
+
+1. Navigate to Menu screen (More tab → or via the "More" label in the menu drawer if available).
+2. Find "My Profile" in the Settings section.
+3. Tap "My Profile".
+
+Expected result:
+
+- The Profile screen opens.
+- The following fields are displayed:
+  - Name: `Yahaya Ahmed`
+  - Staff ID: `YB101375`
+  - Mobile: `08012345678`
+  - Email: `yahaya.ahmed@example.com`
+  - Branch: `Ogba Branch`
+  - Department: `Operations`
+  - Till Account: displayed value from officer data
+  - System Date: today's date in DD/MM/YYYY format
+- A "Change Password" button appears at the bottom.
+
+Source: `src/features/profile/ProfileScreen.tsx`, `src/contexts/AuthContext.tsx`, `src/types/auth.ts`
+
+### Menu Screen
+
+Navigation:
+
+- Bottom Nav → `More`
+
+Expected result:
+
+- The Menu screen opens with the following sections:
+
+**Officer Profile Card (top):**
+- Orange gradient background
+- Avatar with initials "YA"
+- Name: `Yahaya Ahmed`
+- Staff ID: `YB101375`
+- Branch: `Ogba Branch`
+- Till Account: displayed value from officer data
+
+**Offline Data Section:**
+- Unposted Transactions → navigates to Unposted Transactions (shows pending count badge if > 0)
+- Better Life Records → placeholder screen
+- Portfolio Data → placeholder screen
+- Groups → placeholder screen
+- Loan Records → placeholder screen
+
+**Settings Section:**
+- Change Password → navigates to Change Password screen
+- Sync Data → placeholder screen
+- App Settings → placeholder screen
+
+**Sign Out:**
+- Red-bordered button at bottom
+- Triggers sign out confirmation
+
+Source: `src/features/menu/MenuScreen.tsx`, `src/components/OfficerCard/OfficerCard.tsx`
+
 ### Batch BBLS Deposit
 
 Navigation:
@@ -587,11 +655,14 @@ Source: `src/features/batch-deposit/BatchDepositScreen.tsx`, `src/features/batch
 
 ### Savings Products
 
+Available in New Account Deposit:
+
 | Item | Value | Source |
 |------|-------|--------|
-| Product `1` | `Prime Savings` | `src/api/accounts.ts` |
-| Product `2` | `Better Life Savings` | `src/api/accounts.ts` |
-| Product `3` | `Target Saver` | `src/api/accounts.ts` |
+| Product `1` | `Prime Savings` | `src/features/new-account/NewAccountDepositScreen.tsx` |
+| Product `2` | `Better Life Savings` | `src/features/new-account/NewAccountDepositScreen.tsx` |
+
+Note: `Target Saver` exists in `src/api/accounts.ts` but is not exposed in the New Account Deposit screen.
 
 ### Dashboard KPIs
 
@@ -651,13 +722,10 @@ Source: `src/api/groups.ts`
 
 These screens or routes exist as placeholders or are not part of the current implemented test guide:
 
-- More (placeholder 🚧 screen)
 - Settings
-- My Profile
 - Card Deposit
 - Card Withdrawal
 - Card Balance
-- Card Statement
 - Change Password
 - Loans Booked Report (placeholder)
 - E-Ledger Report (placeholder)
