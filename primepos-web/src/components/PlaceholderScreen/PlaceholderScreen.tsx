@@ -1,17 +1,20 @@
-import styles from './PlaceholderScreen.module.css'
+import styles from './placeholder-screen.module.css'
 
-export interface PlaceholderScreenProps {
-  icon: string
+interface PlaceholderScreenProps {
+  icon?: string
   title: string
-  subtitle: string
+  subtitle?: string
 }
 
-export default function PlaceholderScreen({ icon, title, subtitle }: PlaceholderScreenProps) {
+export default function PlaceholderScreen({ icon = '🚧', title, subtitle }: PlaceholderScreenProps) {
   return (
     <div className={styles.container} data-testid="placeholder-screen">
-      <span className={styles.icon}>{icon}</span>
-      <h2 className={styles.title}>{title}</h2>
-      <p className={styles.subtitle}>{subtitle}</p>
+      <div className={styles.content}>
+        <span className={styles.icon}>{icon}</span>
+        <h2>{title}</h2>
+        {subtitle && <p>{subtitle}</p>}
+        {!subtitle && <p>This screen is coming soon</p>}
+      </div>
     </div>
   )
 }

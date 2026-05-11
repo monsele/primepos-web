@@ -100,9 +100,18 @@ describe('MenuScreen', () => {
     expect(mockNavigateTo).toHaveBeenCalledWith('profile')
   })
 
-  it('calls logout when sign out button is clicked', () => {
+  it('shows confirmation dialog when sign out button is clicked', () => {
     render(<MenuScreen />)
     fireEvent.click(screen.getByTestId('sign-out-button'))
+    expect(screen.getByTestId('confirm-dialog')).toBeInTheDocument()
+    expect(screen.getByText('Are you sure you want to sign out?')).toBeInTheDocument()
+  })
+
+  it('calls logout when confirmed in dialog', () => {
+    render(<MenuScreen />)
+    fireEvent.click(screen.getByTestId('sign-out-button'))
+    const buttons = screen.getAllByText('Sign Out')
+    fireEvent.click(buttons[buttons.length - 1])
     expect(mockLogout).toHaveBeenCalled()
   })
 

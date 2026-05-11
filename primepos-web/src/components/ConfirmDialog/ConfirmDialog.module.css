@@ -1,0 +1,66 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--color-surface, #1e1e1e);
+  border-radius: var(--radius-lg, 12px);
+  padding: 24px;
+  max-width: 90%;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text, #fff);
+  margin: 0;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--color-text-muted, #888);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.confirmButton {
+  width: 100%;
+  padding: 16px;
+  background: var(--color-primary, #0070f3);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 48px;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background: var(--color-primary-hover, #0051cc);
+}
+
+.dangerButton {
+  background: var(--color-danger, #dc2626);
+}
+
+.dangerButton:hover:not(:disabled) {
+  background: #b91c1c;
+}

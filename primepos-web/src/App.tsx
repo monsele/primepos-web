@@ -12,6 +12,9 @@ import LoginScreen from './features/auth/LoginScreen'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
 import MenuScreen from './features/menu/MenuScreen'
+import SettingsScreen from './features/settings/SettingsScreen'
+import ChangePasswordScreen from './features/settings/ChangePasswordScreen'
+import ProfileScreen from './features/profile/ProfileScreen'
 import CashInScreen from './features/cash-in/CashInScreen'
 import CashOutScreen from './features/cash-out/CashOutScreen'
 import NewAccountDepositScreen from './features/new-account/NewAccountDepositScreen'
@@ -33,6 +36,12 @@ import TransactionReportsScreen from './features/reports/TransactionReportsScree
 import LoPerformanceReportScreen from './features/reports/LoPerformanceReportScreen'
 import { UnpostedTransactionsScreen } from './features/unposted/UnpostedTransactionsScreen'
 import { Header } from './components/Header/Header'
+import SyncDataScreen from './features/sync-data/SyncDataScreen'
+import BetterLifeScreen from './features/better-life/BetterLifeScreen'
+import PortfolioScreen from './features/portfolio/PortfolioScreen'
+import GroupsScreen from './features/groups/GroupsScreen'
+import LoanRecordsScreen from './features/loan-records/LoanRecordsScreen'
+import AppSettingsScreen from './features/app-settings/AppSettingsScreen'
 import { BottomNav } from './components/BottomNav/BottomNav'
 import { ScreenTransition } from './components/ScreenTransition/ScreenTransition'
 import UpdateBanner from './components/UpdateBanner/UpdateBanner'
@@ -89,6 +98,12 @@ const SCREEN_TITLES: Record<string, string> = {
   loParReport: 'LO PAR Report',
   transactionReports: 'Transaction Reports',
   loPerformanceReport: 'LO Performance Report',
+  syncData: 'Sync Data',
+  betterLife: 'Better Life Records',
+  portfolio: 'Portfolio Data',
+  groups: 'Groups',
+  loanRecords: 'Loan Records',
+  appSettings: 'App Settings',
 }
 
 function AppShell() {
@@ -141,6 +156,24 @@ function AppShell() {
         return <UnpostedTransactionsScreen />
       case 'more':
         return <MenuScreen />
+      case 'settings':
+        return <SettingsScreen />
+      case 'changePassword':
+        return <ChangePasswordScreen />
+      case 'profile':
+        return <ProfileScreen />
+      case 'syncData':
+        return <SyncDataScreen />
+      case 'betterLife':
+        return <BetterLifeScreen />
+      case 'portfolio':
+        return <PortfolioScreen />
+      case 'groups':
+        return <GroupsScreen />
+      case 'loanRecords':
+        return <LoanRecordsScreen />
+      case 'appSettings':
+        return <AppSettingsScreen />
       default:
         return (
           <PlaceholderContent

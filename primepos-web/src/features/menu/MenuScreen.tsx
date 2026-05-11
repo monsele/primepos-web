@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { useAuth } from '../../contexts/useAuth'
 import { useNavigation } from '../../contexts/NavigationContext'
 import { useSync } from '../../contexts/useSync'
 import MenuItem from '../../components/MenuItem/MenuItem'
 import OfficerCard from '../../components/OfficerCard/OfficerCard'
+import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import type { Screen } from '../../types/navigation'
 import styles from './menu.module.css'
 
@@ -31,6 +33,7 @@ export default function MenuScreen() {
   const { user, logout } = useAuth()
   const { navigateTo } = useNavigation()
   const { pendingCount } = useSync()
+  const [isSignOutDialogOpen, setSignOutDialogOpen] = useState(false)
 
   if (!user) {
     return null
@@ -75,12 +78,23 @@ export default function MenuScreen() {
         <button
           type="button"
           className={styles.signOutButton}
-          onClick={handleSignOut}
+          onClick={() => setSignOutDialogOpen(true)}
           data-testid="sign-out-button"
         >
           Sign Out
         </button>
       </div>
+
+      <ConfirmDialog
+        isOpen={isSignOutDialogOpen}
+        title="Sign Out"
+        message="Are you sure you want to sign out?"
+        confirmLabel="Sign Out"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={handleSignOut}
+        onCancel={() => setSignOutDialogOpen(false)}
+      />
     </div>
   )
 }

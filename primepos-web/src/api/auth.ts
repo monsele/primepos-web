@@ -1,6 +1,11 @@
 // import { apiClient } from './client'
 import type { LoginRequest, LoginResponse } from '../types/auth'
 
+export interface ChangePasswordRequest {
+  currentPassword: string
+  newPassword: string
+}
+
 export async function login(credentials: LoginRequest): Promise<LoginResponse> {
   // Simulate API delay for realistic UX
   await new Promise((resolve) => setTimeout(resolve, 800))
@@ -25,6 +30,21 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
   }
 
   throw new Error('Invalid credentials. Please try again.')
+}
+
+export async function changePassword(
+  request: ChangePasswordRequest,
+): Promise<void> {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 800))
+
+  // Mock implementation - always succeeds for development
+  // In production, this would call the actual API
+  if (request.currentPassword === 'wrong') {
+    throw new Error('Current password is incorrect')
+  }
+
+  // Success - password would be changed in production
 }
 
 // Future: real API call

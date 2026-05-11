@@ -24,7 +24,7 @@
 #   - done: Retrospective has been completed
 
 generated: 2026-05-04T11:52:37
-last_updated: 2026-05-10T17:03:00
+last_updated: 2026-05-11T17:00:00
 project: prime-app
 project_key: NOKEY
 tracking_system: file-system
@@ -73,7 +73,7 @@ development_status:
    8-4-service-worker-pwa-update-flow: done
   epic-8-retrospective: optional
 epic-9: in-progress
-   9-1-menu-offline-data: review
-   9-2-my-profile: review
-   9-3-settings-sign-out: ready-for-dev
+    9-1-menu-offline-data: review
+    9-2-my-profile: review
+    9-3-settings-sign-out: review
   epic-9-retrospective: optional

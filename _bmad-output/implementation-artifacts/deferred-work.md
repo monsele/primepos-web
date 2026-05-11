@@ -4,6 +4,7 @@
 
 - **Offline login (cached credentials) completely unimplemented** [src/features/auth/useLogin.ts, src/api/auth.ts] — deferred to Story 8.1; IndexedDB infrastructure not yet available. Story 8.1 will provide the caching layer needed for offline login fallback.
 - **Hardcoded transaction data and dead navigation links in dashboard** [src/App.tsx:120-165] — pre-existing placeholder code not introduced by this story. Dashboard contains non-functional buttons and `<a href="#">` links that are accessibility anti-patterns.
+- **Dead navigation links in MenuScreen** [src/features/menu/MenuScreen.tsx] — menu items for syncData, profile, betterLife, portfolio, groups, loanRecords, appSettings were not rendered in App.tsx. **FIXED**: All screens are now implemented and linked.
 - **apiClient lacks timeout/abort handling** [src/api/client.ts:13] — `fetch` call has no `AbortController` or timeout logic. Not required by MVP spec. If network is unresponsive, API calls hang indefinitely.
 
 ## Deferred from: code review of 1-2-connection-status-offline-awareness (2026-05-05)
