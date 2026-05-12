@@ -4,7 +4,7 @@ story_key: 9-2-my-profile
 epic: 9
 epic_title: Menu, Profile & Settings
 title: My Profile
-status: review
+status: done
 source_files:
   - prd.md §4.8
   - architecture.md §3.1

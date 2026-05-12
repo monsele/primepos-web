@@ -4,7 +4,7 @@ story_key: 6-1-batch-bbls-deposit
 epic: 6
 epic_title: Batch & Card Operations
 title: Batch BBLS Deposit
-status: review
+status: done
 source_files:
   - prd.md §4.3.4
   - architecture.md §3.1, §5.2

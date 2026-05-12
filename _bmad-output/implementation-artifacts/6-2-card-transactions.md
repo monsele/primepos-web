@@ -4,7 +4,7 @@ story_key: 6-2-card-transactions
 epic: 6
 epic_title: Batch & Card Operations
 title: Card Transactions
-status: review
+status: done
 source_files:
   - prd.md §4.3.5
   - architecture.md §3.1

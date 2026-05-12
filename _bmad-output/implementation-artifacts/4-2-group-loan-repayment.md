@@ -4,7 +4,7 @@ story_key: 4-2-group-loan-repayment
 epic: 4
 epic_title: Loan Management
 title: Group Loan Repayment
-status: completed
+status: done
 source_files:
   - prd.md §4.6
   - architecture.md §3.1

@@ -4,7 +4,7 @@ story_key: 8-1-indexeddb-local-storage
 epic: 8
 epic_title: Offline-First Infrastructure
 title: IndexedDB Local Storage
-status: review
+status: done
 source_files:
   - prd.md §4.9
   - architecture.md §5.1

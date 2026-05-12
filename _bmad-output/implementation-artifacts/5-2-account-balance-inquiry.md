@@ -4,7 +4,7 @@ story_key: 5-2-account-balance-inquiry
 epic: 5
 epic_title: Account Services
 title: Account Balance Inquiry
-status: review
+status: done
 source_files:
   - prd.md Â§4.4.2
   - architecture.md Â§3.1, Â§5.4

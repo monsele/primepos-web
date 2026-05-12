@@ -4,7 +4,7 @@ story_key: 5-1-new-savings-account
 epic: 5
 epic_title: Account Services
 title: New Savings Account (3-Step Wizard)
-status: review
+status: done
 source_files:
   - prd.md §4.4.4
   - architecture.md §3.1, §6.1

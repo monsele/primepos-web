@@ -4,7 +4,7 @@ story_key: 7-2-detailed-reports
 epic: 7
 epic_title: Reports & Analytics
 title: Detailed Reports (Placeholder)
-status: review
+status: done
 source_files:
   - prd.md §4.7
   - architecture.md §3.1

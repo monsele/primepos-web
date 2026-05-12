@@ -4,7 +4,7 @@ story_key: 4-3-loan-inquiry
 epic: 4
 epic_title: Loan Management
 title: Loan Inquiry
-status: review
+status: done
 source_files:
   - prd.md §4.4.1
   - architecture.md §3.1, §5.4

@@ -4,7 +4,7 @@ story_key: 4-1-loan-repayment
 epic: 4
 epic_title: Loan Management
 title: Loan Repayment
-status: review
+status: done
 source_files:
   - prd.md §4.5
   - architecture.md §3.1, §5.2

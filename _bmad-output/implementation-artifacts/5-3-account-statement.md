@@ -4,7 +4,7 @@ story_key: 5-3-account-statement
 epic: 5
 epic_title: Account Services
 title: Account Statement
-status: review
+status: done
 source_files:
   - prd.md Â§4.4.3
   - architecture.md Â§3.1, Â§6.1

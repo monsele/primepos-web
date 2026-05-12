@@ -4,7 +4,7 @@ story_key: 7-1-reports-dashboard
 epic: 7
 epic_title: Reports & Analytics
 title: Reports Dashboard
-status: review
+status: done
 source_files:
   - prd.md §4.7
   - architecture.md §3.1, §6.1

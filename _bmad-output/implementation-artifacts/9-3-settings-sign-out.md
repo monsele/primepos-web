@@ -4,7 +4,7 @@ story_key: 9-3-settings-sign-out
 epic: 9
 epic_title: Menu, Profile & Settings
 title: Settings & Sign Out
-status: review
+status: done
 source_files:
   - prd.md §4.8
   - architecture.md §3.1, §6.1

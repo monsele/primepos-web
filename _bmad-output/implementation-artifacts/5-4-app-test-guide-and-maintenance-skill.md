@@ -4,7 +4,7 @@ story_key: 5-4-app-test-guide-and-maintenance-skill
 epic: 5
 epic_title: Account Services
 title: App Test Guide & Maintenance Skill
-status: review
+status: done
 source_files:
   - epics.md Â§Story 5.4
   - architecture.md Â§2.4, Â§10

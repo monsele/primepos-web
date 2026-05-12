@@ -4,7 +4,7 @@ story_key: 8-2-transaction-queue-manager
 epic: 8
 epic_title: Offline-First Infrastructure
 title: Transaction Queue Manager
-status: review
+status: done
 source_files:
   - prd.md §4.9
   - architecture.md §5.2, §5.3
