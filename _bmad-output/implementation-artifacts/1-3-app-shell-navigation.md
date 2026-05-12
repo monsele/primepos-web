@@ -4,7 +4,7 @@ story_key: 1-3-app-shell-navigation
 epic: 1
 epic_title: Authentication & App Shell
 title: App Shell & Navigation
-status: review
+status: done
 source_files:
   - prd.md §4.1, §4.2
   - architecture.md §3.1, §3.2, §3.3

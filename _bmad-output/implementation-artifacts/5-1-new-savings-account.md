@@ -4,7 +4,7 @@ story_key: 5-1-new-savings-account
 epic: 5
 epic_title: Account Services
 title: New Savings Account (3-Step Wizard)
-status: ready-for-dev
+status: done
 source_files:
   - prd.md §4.4.4
   - architecture.md §3.1, §6.1
@@ -22,14 +22,14 @@ dependencies:
 As a bank officer, I want to open a new savings account for a customer through a guided multi-step form so that all required KYC data is collected accurately.
 
 ## Business Context
-New account opening is a regulated process requiring complete KYC data. The 3-step wizard breaks a long form into manageable chunks: Bio Info → Contact → Account. This reduces cognitive load and allows officers to go back and correct errors without losing data. Stepper visualization shows progress and builds confidence.
+New account opening is a regulated process requiring complete KYC data. The 3-step wizard breaks a long form into manageable chunks: Bio Info -> Contact -> Account. This reduces cognitive load and allows officers to go back and correct errors without losing data. Stepper visualization shows progress and builds confidence.
 
 ## Acceptance Criteria (BDD)
 
 ```gherkin
-Scenario: Step 1 — Bio Info
+Scenario: Step 1 - Bio Info
   Given I start the New Savings Account flow
-  Then I see a 3-step stepper (Bio Info → Contact → Account)
+  Then I see a 3-step stepper (Bio Info -> Contact -> Account)
   And Step 1 is active
   When I fill in:
     - Branch
@@ -39,7 +39,7 @@ Scenario: Step 1 — Bio Info
   And I tap "Continue"
   Then I advance to Step 2
 
-Scenario: Step 2 — Contact
+Scenario: Step 2 - Contact
   Given I am on Step 2
   Then the stepper shows Step 1 complete, Step 2 active
   When I fill in:
@@ -52,9 +52,9 @@ Scenario: Step 2 — Contact
   When I tap "Back"
   Then I return to Step 1 with data preserved
 
-Scenario: Step 3 — Account
+Scenario: Step 3 - Account
   Given I am on Step 3
-  Then the stepper shows Steps 1–2 complete
+  Then the stepper shows Steps 1-2 complete
   When I select a Product Type
   And I enter an Initial Deposit amount
   And I tap "Submit"
@@ -225,27 +225,27 @@ interface CreateSavingsAccountRequest {
 src/
   features/
     new-savings-account/
-      NewSavingsAccountScreen.tsx   ← NEW
-      new-savings-account.module.css ← NEW
-      useNewSavingsAccount.ts       ← NEW
-      StepBioInfo.tsx               ← NEW
-      StepContact.tsx               ← NEW
-      StepAccount.tsx               ← NEW
+      NewSavingsAccountScreen.tsx   <- NEW
+      new-savings-account.module.css <- NEW
+      useNewSavingsAccount.ts       <- NEW
+      StepBioInfo.tsx               <- NEW
+      StepContact.tsx               <- NEW
+      StepAccount.tsx               <- NEW
   components/
     Stepper/
-      Stepper.tsx                   ← NEW
-      Stepper.module.css            ← NEW
+      Stepper.tsx                   <- NEW
+      Stepper.module.css            <- NEW
     GenderToggle/
-      GenderToggle.tsx              ← NEW
-      GenderToggle.module.css       ← NEW
+      GenderToggle.tsx              <- NEW
+      GenderToggle.module.css       <- NEW
     DateInput/
-      DateInput.tsx                 ← NEW
-      DateInput.module.css          ← NEW
+      DateInput.tsx                 <- NEW
+      DateInput.module.css          <- NEW
     SuccessModal/
-      SuccessModal.tsx              ← NEW
-      SuccessModal.module.css       ← NEW
+      SuccessModal.tsx              <- NEW
+      SuccessModal.module.css       <- NEW
   api/
-    accounts.ts                     ← UPDATE
+    accounts.ts                     <- UPDATE
 ```
 
 ---
@@ -266,8 +266,8 @@ src/
 
 ## Common Pitfalls to Avoid
 
-1. **DO NOT** lose form data when going back — preserve all state in the wizard
-2. **DO NOT** validate all steps at once — only validate the current step
+1. **DO NOT** lose form data when going back - preserve all state in the wizard
+2. **DO NOT** validate all steps at once - only validate the current step
 3. **DO NOT** use a native date picker without DD/MM/YYYY formatting
 4. **DO NOT** forget to copy the account number to clipboard in the success modal
 
@@ -281,58 +281,89 @@ src/
 | **Story 1.2** (Connection Status) | ToastProvider for errors |
 | **Story 1.3** (Navigation) | Inner screen |
 
-
 ---
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types
+  - [x] 5.2 Update parent screens
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils
+  - [x] 6.3 Integration tests
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite - no regressions
+  - [x] 7.2 Run lint - no errors
+  - [x] 7.3 Run build - succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
 ## Dev Agent Record
 
 ### Debug Log
-<!-- Developer notes on issues encountered, workarounds, environment quirks -->
+- Built the new wizard in `primepos-web` without touching unrelated dirty work already present in the repo.
+- Fixed one TypeScript fixture mismatch in `NewSavingsAccountScreen.test.tsx` after the first build attempt.
 
 ### Implementation Plan
-<!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
+- Implemented the wizard as a dedicated feature module with step-specific presentational components and a single stateful hook to preserve data across back and forward navigation.
+- Added reusable `Stepper`, `GenderToggle`, `DateInput`, and `SuccessModal` components so the flow follows existing shared-component patterns instead of using one-off inline UI.
+- Extended `src/api/accounts.ts` with mocked savings products and account creation APIs, then rendered the new screen from `App.tsx` and returned officers to the dashboard after success.
+- Validated date-of-birth and BVN rules in shared validation helpers so the same behavior is reusable in tests and future stories.
 
 ### Completion Notes
-<!-- Summarize what was actually implemented and tested -->
+- Implemented the full 3-step New Savings Account wizard with per-step validation, preserved form state when navigating backward, and a success modal with clipboard copy plus dashboard return flow.
+- Added mocked savings product loading and savings-account creation support in `src/api/accounts.ts`, including offline queue handling consistent with existing transaction stories.
+- Added component, hook, screen, navigation, and validation coverage for the new story behavior.
+- Verified with `npm test`, `npm run lint`, and `npm run build`.
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+- primepos-web/src/App.tsx
+- primepos-web/src/api/accounts.ts
+- primepos-web/src/components/DateInput/DateInput.module.css
+- primepos-web/src/components/DateInput/DateInput.test.tsx
+- primepos-web/src/components/DateInput/DateInput.tsx
+- primepos-web/src/components/GenderToggle/GenderToggle.module.css
+- primepos-web/src/components/GenderToggle/GenderToggle.test.tsx
+- primepos-web/src/components/GenderToggle/GenderToggle.tsx
+- primepos-web/src/components/Stepper/Stepper.module.css
+- primepos-web/src/components/Stepper/Stepper.test.tsx
+- primepos-web/src/components/Stepper/Stepper.tsx
+- primepos-web/src/components/SuccessModal/SuccessModal.module.css
+- primepos-web/src/components/SuccessModal/SuccessModal.test.tsx
+- primepos-web/src/components/SuccessModal/SuccessModal.tsx
+- primepos-web/src/features/new-savings-account/NewSavingsAccountScreen.test.tsx
+- primepos-web/src/features/new-savings-account/NewSavingsAccountScreen.tsx
+- primepos-web/src/features/new-savings-account/StepAccount.tsx
+- primepos-web/src/features/new-savings-account/StepBioInfo.tsx
+- primepos-web/src/features/new-savings-account/StepContact.tsx
+- primepos-web/src/features/new-savings-account/new-savings-account.module.css
+- primepos-web/src/features/new-savings-account/useNewSavingsAccount.test.ts
+- primepos-web/src/features/new-savings-account/useNewSavingsAccount.ts
+- primepos-web/src/features/new-savings-account/useSavingsProducts.ts
+- primepos-web/src/types/navigation.test.ts
+- primepos-web/src/utils/validation.test.ts
+- primepos-web/src/utils/validation.ts
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- 2026-05-08: Implemented the New Savings Account 3-step wizard, reusable supporting components, mocked account services, navigation wiring, and full automated validation coverage.
 ---
 
 ## Completion Checklist

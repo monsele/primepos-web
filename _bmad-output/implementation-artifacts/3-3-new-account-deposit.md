@@ -4,7 +4,7 @@ story_key: 3-3-new-account-deposit
 epic: 3
 epic_title: Cash Transactions
 title: New Account Deposit
-status: ready-for-dev
+status: done
 source_files:
   - prd.md §4.3.3
   - architecture.md §3.1, §5.2
@@ -214,67 +214,105 @@ src/
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types
+  - [x] 5.2 Update parent screens
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils
+  - [x] 6.3 Integration tests
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
 ## Dev Agent Record
 
 ### Debug Log
+- Added `maxLength` prop to `Input` component to support BVN 11-digit constraint. No issues encountered.
 <!-- Developer notes on issues encountered, workarounds, environment quirks -->
 
 ### Implementation Plan
+- Reused existing `useCashIn` hook pattern for form state, validation, and offline queueing
+- Created `ProductSelect` reusable component with styled native `<select>` (dark-theme compatible)
+- Added `maxLength` support to shared `Input` component
+- Implemented `createAccountWithDeposit` API with mock response generating random NUBAN
+- Included offline queue support via `addToQueue` for consistency with other transaction features
+- Success state handled via in-card banner (not toast-only) to show account number prominently
 <!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
 
 ### Completion Notes
+✅ Story 3.3 implementation complete. All acceptance criteria met.
+
+**Implemented:**
+- `NewAccountDepositScreen` with full form (firstName, surname, otherName, gender, BVN, product select, initial deposit)
+- `useNewAccountDeposit` hook with validation, API call, offline queueing, success handling, form reset
+- `ProductSelect` reusable component with dark theme styling
+- `isValidBvn` utility with `/^\d{11}$/` validation
+- `createAccountWithDeposit` API function with mock implementation
+- Wired `newAccount` screen into App.tsx routing
+- Added `maxLength` prop to shared `Input` component
+
+**Tests:**
+- `validation.test.ts` (6 tests) — BVN validation edge cases
+- `ProductSelect.test.tsx` (4 tests) — rendering, options, onChange, errors
+- `useNewAccountDeposit.test.ts` (8 tests) — validation, submission, offline queueing, reset
+- `NewAccountDepositScreen.test.tsx` (5 tests) — rendering, success state, errors, submit
+- Full regression: 169 tests pass, 0 failures
+- Lint: clean
+- Build: succeeds
 <!-- Summarize what was actually implemented and tested -->
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+- `primepos-web/src/utils/validation.ts` (new)
+- `primepos-web/src/utils/validation.test.ts` (new)
+- `primepos-web/src/components/ProductSelect/ProductSelect.tsx` (new)
+- `primepos-web/src/components/ProductSelect/ProductSelect.module.css` (new)
+- `primepos-web/src/components/ProductSelect/ProductSelect.test.tsx` (new)
+- `primepos-web/src/components/Input/Input.tsx` (modified — added maxLength prop)
+- `primepos-web/src/features/new-account/NewAccountDepositScreen.tsx` (new)
+- `primepos-web/src/features/new-account/NewAccountDepositScreen.test.tsx` (new)
+- `primepos-web/src/features/new-account/useNewAccountDeposit.ts` (new)
+- `primepos-web/src/features/new-account/useNewAccountDeposit.test.ts` (new)
+- `primepos-web/src/features/new-account/new-account-deposit.module.css` (new)
+- `primepos-web/src/api/accounts.ts` (modified — added createAccountWithDeposit)
+- `primepos-web/src/App.tsx` (modified — wired newAccount screen)
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- 2026-05-06: Implemented Story 3.3 New Account Deposit — full feature with screen, hook, components, API, tests, lint/build clean.
 ---
 
 ## Completion Checklist
 
-- [ ] `NewAccountDepositScreen` with all form fields
-- [ ] BVN validation (11 digits)
-- [ ] Product selection dropdown
-- [ ] Amount validation (> 0)
-- [ ] Success message with new account number
-- [ ] Form reset after success
-- [ ] Mock API for account creation
-- [ ] Unit tests for validation and hook
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] `NewAccountDepositScreen` with all form fields
+- [x] BVN validation (11 digits)
+- [x] Product selection dropdown
+- [x] Amount validation (> 0)
+- [x] Success message with new account number
+- [x] Form reset after success
+- [x] Mock API for account creation
+- [x] Unit tests for validation and hook
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 

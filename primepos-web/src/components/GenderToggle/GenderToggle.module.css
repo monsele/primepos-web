@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #64748b);
+  font-weight: 600;
+}
+
+.group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.option {
+  border: 1px solid var(--color-border, #d9dfe7);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text, #111827);
+  min-height: 3rem;
+  border-radius: var(--radius-md, 0.75rem);
+  font-weight: 600;
+}
+
+.selected {
+  background: color-mix(in srgb, var(--color-primary, #f97316) 12%, #ffffff);
+  border-color: var(--color-primary, #f97316);
+  color: var(--color-primary, #f97316);
+}
+
+.errorOption {
+  border-color: var(--color-danger, #dc2626);
+}
+
+.errorText {
+  font-size: 0.75rem;
+  color: var(--color-danger, #dc2626);
+  min-height: 1rem;
+}

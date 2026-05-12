@@ -1,0 +1,88 @@
+.container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.groupSelectRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.groupDisplay {
+  flex: 1;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-primary);
+  padding: 1rem;
+}
+
+.groupDisplayLabel {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.groupDisplayName {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.groupDisplayMeta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.selectButton {
+  flex-shrink: 0;
+}
+
+.searchRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.searchInput {
+  flex: 1;
+}
+
+.searchButton {
+  flex-shrink: 0;
+}
+
+.searchingState {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.errorState {
+  padding: 1rem;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+}
+
+.loanCard {
+  margin-top: 0.25rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}

@@ -4,7 +4,7 @@ story_key: 4-1-loan-repayment
 epic: 4
 epic_title: Loan Management
 title: Loan Repayment
-status: ready-for-dev
+status: done
 source_files:
   - prd.md §4.5
   - architecture.md §3.1, §5.2
@@ -202,30 +202,30 @@ src/
 
 ## Tasks/Subtasks
 
-- [ ] **Task 1: Create components and types**
-  - [ ] 1.1 Create type definitions
-  - [ ] 1.2 Create reusable components
-- [ ] **Task 2: Build feature screen(s)**
-  - [ ] 2.1 Create main screen component(s)
-  - [ ] 2.2 Create styles module
-- [ ] **Task 3: Implement hooks and logic**
-  - [ ] 3.1 Create data fetching hooks
-  - [ ] 3.2 Implement form/business logic
-- [ ] **Task 4: API and services**
-  - [ ] 4.1 Create/update API functions
-  - [ ] 4.2 Add mock implementations
-- [ ] **Task 5: Wire navigation and updates**
-  - [ ] 5.1 Update navigation types
-  - [ ] 5.2 Update parent screens
-- [ ] **Task 6: Author tests**
-  - [ ] 6.1 Unit tests for components
-  - [ ] 6.2 Unit tests for hooks/utils
-  - [ ] 6.3 Integration tests
-- [ ] **Task 7: Validation & regression**
-  - [ ] 7.1 Run full test suite — no regressions
-  - [ ] 7.2 Run lint — no errors
-  - [ ] 7.3 Run build — succeeds
-  - [ ] 7.4 Verify all acceptance criteria are met
+- [x] **Task 1: Create components and types**
+  - [x] 1.1 Create type definitions
+  - [x] 1.2 Create reusable components
+- [x] **Task 2: Build feature screen(s)**
+  - [x] 2.1 Create main screen component(s)
+  - [x] 2.2 Create styles module
+- [x] **Task 3: Implement hooks and logic**
+  - [x] 3.1 Create data fetching hooks
+  - [x] 3.2 Implement form/business logic
+- [x] **Task 4: API and services**
+  - [x] 4.1 Create/update API functions
+  - [x] 4.2 Add mock implementations
+- [x] **Task 5: Wire navigation and updates**
+  - [x] 5.1 Update navigation types (already existed)
+  - [x] 5.2 Update parent screens (App.tsx)
+- [x] **Task 6: Author tests**
+  - [x] 6.1 Unit tests for components
+  - [x] 6.2 Unit tests for hooks/utils
+  - [x] 6.3 Integration tests
+- [x] **Task 7: Validation & regression**
+  - [x] 7.1 Run full test suite — no regressions
+  - [x] 7.2 Run lint — no errors
+  - [x] 7.3 Run build — succeeds
+  - [x] 7.4 Verify all acceptance criteria are met
 
 ---
 
@@ -238,30 +238,63 @@ src/
 <!-- Record technical decisions, approach notes, architecture choices as tasks are completed -->
 
 ### Completion Notes
-<!-- Summarize what was actually implemented and tested -->
+
+- Created `Loan` type definition with all required fields (amounts in kobo)
+- Built `searchLoan` and `postLoanRepayment` API functions with mock implementations
+- Created `LoanCard` component displaying all loan fields with `formatNaira` and DD/MM/YYYY date formatting
+- Implemented `useLoanSearch` hook using TanStack Query pattern (consistent with `useAccountSearch`)
+- Implemented `useLoanRepayment` hook with validation:
+  - Amount must be > 0
+  - Amount cannot exceed `currentBalance + outstandingInterest`
+  - Closed loans cannot be repaid
+  - Offline transactions queued via IndexedDB
+- Built `LoanRepaymentScreen` following Cash In screen layout patterns
+- Wired `loanRepayment` screen into `App.tsx` navigation
+- Wrote 19 tests covering:
+  - `LoanCard` rendering (2 tests)
+  - `useLoanSearch` success/error/loading states (3 tests)
+  - `useLoanRepayment` validation, online posting, offline queuing, form reset (9 tests)
+  - `LoanRepaymentScreen` rendering, search, error, submission (5 tests)
+- Full regression: 206 tests pass, 0 lint errors, build succeeds
 
 ---
 
 ## File List
-<!-- New, modified, and deleted files relative to repo root -->
+
+### New Files
+- `primepos-web/src/types/loan.ts`
+- `primepos-web/src/api/loans.ts`
+- `primepos-web/src/components/LoanCard/LoanCard.tsx`
+- `primepos-web/src/components/LoanCard/LoanCard.module.css`
+- `primepos-web/src/features/loan-repayment/LoanRepaymentScreen.tsx`
+- `primepos-web/src/features/loan-repayment/loan-repayment.module.css`
+- `primepos-web/src/features/loan-repayment/useLoanSearch.ts`
+- `primepos-web/src/features/loan-repayment/useLoanRepayment.ts`
+- `primepos-web/src/components/LoanCard/LoanCard.test.tsx`
+- `primepos-web/src/features/loan-repayment/LoanRepaymentScreen.test.tsx`
+- `primepos-web/src/features/loan-repayment/useLoanSearch.test.tsx`
+- `primepos-web/src/features/loan-repayment/useLoanRepayment.test.tsx`
+
+### Modified Files
+- `primepos-web/src/App.tsx`
 
 ---
 
 ## Change Log
-<!-- Summary of changes per session -->
+- 2026-05-06: Implemented loan repayment feature — types, API, LoanCard component, search/repayment hooks, screen, wiring, and comprehensive tests. All 206 tests pass, lint clean, build succeeds.
 ---
 
 ## Completion Checklist
 
-- [ ] `LoanRepaymentScreen` with search, loan card, form
-- [ ] `LoanCard` displays all loan details
-- [ ] Repayment validation (<= balance + interest)
-- [ ] Success toast on post
-- [ ] Offline queue support
-- [ ] Mock API for loan search and repayment
-- [ ] Unit tests
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] `LoanRepaymentScreen` with search, loan card, form
+- [x] `LoanCard` displays all loan details
+- [x] Repayment validation (<= balance + interest)
+- [x] Success toast on post
+- [x] Offline queue support
+- [x] Mock API for loan search and repayment
+- [x] Unit tests
+- [x] No lint errors
+- [x] Build succeeds
 
 ---
 

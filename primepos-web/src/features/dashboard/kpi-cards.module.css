@@ -1,0 +1,55 @@
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: default;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.kpiCard:active {
+  transform: scale(0.97);
+  background: var(--color-surface-elevated);
+}
+
+.kpiCardClickable {
+  cursor: pointer;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.subtitleSuccess {
+  color: var(--color-success);
+}
+
+.subtitleWarning {
+  color: var(--color-warning);
+}

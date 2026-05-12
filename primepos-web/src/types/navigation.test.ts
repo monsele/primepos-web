@@ -106,6 +106,7 @@ describe('isInnerScreen', () => {
       'cashOut',
       'loanRepayment',
       'newAccount',
+      'newSavingsAccount',
       'settings',
       'profile',
     ]

@@ -28,6 +28,12 @@ export type Screen =
   | 'unpostedTransactions'
   | 'changePassword'
   | 'newSavingsAccount'
+  | 'betterLife'
+  | 'portfolio'
+  | 'groups'
+  | 'loanRecords'
+  | 'syncData'
+  | 'appSettings'
 
 export const MAIN_TAB_SCREENS: Screen[] = [
   'dashboard',

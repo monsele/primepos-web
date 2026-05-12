@@ -1,0 +1,51 @@
+.container {
+  min-height: 100%;
+  background: var(--color-background, #121212);
+}
+
+.content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-muted, #888);
+  margin: 0 0 4px 0;
+  padding: 0 8px;
+}
+
+.menuItems {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface, #1e1e1e);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.signOutButton {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid var(--color-danger, #dc2626);
+  color: var(--color-danger, #dc2626);
+  border-radius: var(--radius-md, 8px);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.15s ease;
+}
+
+.signOutButton:active {
+  background: rgba(220, 38, 38, 0.1);
+}

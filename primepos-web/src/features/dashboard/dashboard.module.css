@@ -1,0 +1,22 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hero {
+  margin-bottom: 1.5rem;
+}
+
+.hero h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.hero p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+

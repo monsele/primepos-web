@@ -21,13 +21,13 @@ related:
 | 2 | Dashboard & Navigation | 3 | Critical |
 | 3 | Cash Transactions | 4 | Critical |
 | 4 | Loan Management | 3 | Critical |
-| 5 | Account Services | 3 | Critical |
+| 5 | Account Services | 4 | Critical |
 | 6 | Batch & Card Operations | 2 | High |
 | 7 | Reports & Analytics | 2 | Medium |
 | 8 | Offline-First Infrastructure | 4 | Critical |
 | 9 | Menu, Profile & Settings | 3 | Medium |
 
-**Total: 27 stories**
+**Total: 28 stories**
 
 ---
 
@@ -743,6 +743,51 @@ Scenario: Date validation
 - API: `GET /api/accounts/statement?number={n}&from={date}&to={date}`
 - Date inputs: native date picker with DD/MM/YYYY display format
 - Source: PRD §4.4.3, UX §3.13
+
+---
+
+### Story 5.4: App Test Guide & Maintenance Skill
+
+**User Story:**
+As a product or engineering teammate, I want a simple testing guide with real test values and a BMAD maintenance skill so that anyone can reliably validate the app and keep the guide current as features evolve.
+
+**Acceptance Criteria:**
+
+```gherkin
+Scenario: Testing guide exists with real values
+  Given I open the app testing guide markdown file
+  Then I see simple setup steps for running the app locally
+  And I see the current working login credentials
+  And I see test values for key implemented flows
+  And each value is based on actual repo mocks or current app behavior
+
+Scenario: Guide covers the main implemented flows
+  Given I am using the testing guide
+  Then I can follow documented steps to verify:
+    - Login
+    - Cash In
+    - Cash Out
+    - Loan Repayment
+    - Loan Inquiry
+    - Account Balance
+    - New Savings Account
+  And the guide clearly states expected results and known invalid test values where applicable
+
+Scenario: BMAD skill updates the guide
+  Given a teammate runs the dedicated BMAD skill for the test guide
+  When they ask it to refresh the guide after feature changes
+  Then it updates the same markdown file
+  And it scans current implementation files and mock data before editing
+  And it preserves a simple, human-readable structure
+```
+
+**Technical Notes:**
+- Create one canonical guide at `docs/testing/app-test-guide.md`
+- Pull test values from current source files, not invented examples
+- Include both positive and negative values where the app behavior supports them
+- Create a local BMAD skill under `.agents/skills/` dedicated to maintaining the testing guide
+- The maintenance skill must instruct the agent to inspect implemented screens, mock APIs, and relevant tests before updating the guide
+- Source: User request (2026-05-08), Architecture Â§2.4, Â§10
 
 ---
 
