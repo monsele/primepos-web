@@ -28,6 +28,14 @@ const transactMenu: MenuGroup[] = [
     ],
   },
   {
+    title: 'LOANS',
+    items: [
+      { id: 'loan-repayment', label: 'Loan Repayment', subtitle: 'Post repayment', targetScreen: 'loanRepayment' },
+      { id: 'group-loan-repayment', label: 'Group Loan Repayment', subtitle: 'Group repayment', targetScreen: 'groupLoanRepayment' },
+      { id: 'loan-inquiry', label: 'Loan Inquiry', subtitle: 'Check loan status', targetScreen: 'loanInquiry' },
+    ],
+  },
+  {
     title: 'CARD',
     items: [
       { id: 'card-transactions', label: 'Card Transactions', subtitle: 'POS operations', targetScreen: 'cardTransactions' },

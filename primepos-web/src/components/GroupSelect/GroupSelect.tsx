@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import type { Group } from '../../types/group'
 import styles from './GroupSelect.module.css'
 
@@ -11,6 +11,9 @@ export interface GroupSelectProps {
 
 export function GroupSelect({ groups, isOpen, onClose, onSelect }: GroupSelectProps) {
   const [searchQuery, setSearchQuery] = useState('')
+  const backdropRef = useRef<HTMLDivElement>(null)
+  const sheetRef = useRef<HTMLDivElement>(null)
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
 
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) return groups
@@ -29,22 +32,70 @@ export function GroupSelect({ groups, isOpen, onClose, onSelect }: GroupSelectPr
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+    // Use pointer-events-like behavior with dedicated check
+    if (e.target === backdropRef.current) {
       onClose()
     }
   }
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      previouslyFocusedElementRef.current = document.activeElement as HTMLElement
+      document.body.style.overflow = 'hidden'
+      
+      // Focus the sheet for keyboard navigation
+      const focusable = sheetRef.current?.querySelector('input, button') as HTMLElement
+      focusable?.focus()
+    } else {
+      document.body.style.overflow = ''
+      previouslyFocusedElementRef.current?.focus()
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  // Keyboard accessibility: Escape key to close, focus trap
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
+
+// Reset search query when modal closes without selection
+   const prevIsOpenRef = useRef(false)
+   useEffect(() => {
+    if (!isOpen && prevIsOpenRef.current) {
+      setSearchQuery('')
+    }
+    prevIsOpenRef.current = isOpen
+  }, [isOpen])
 
   if (!isOpen) return null
 
   return (
     <div
+      ref={backdropRef}
       className={styles.backdrop}
       onClick={handleBackdropClick}
       data-testid="group-select-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="group-select-title"
     >
-      <div className={styles.sheet} data-testid="group-select-sheet">
+      <div ref={sheetRef} className={styles.sheet} data-testid="group-select-sheet">
         <div className={styles.header}>
-          <span className={styles.title}>Select Group</span>
+          <span id="group-select-title" className={styles.title}>Select Group</span>
           <button
             className={styles.closeBtn}
             onClick={onClose}

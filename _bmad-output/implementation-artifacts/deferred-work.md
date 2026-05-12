@@ -34,7 +34,4 @@
 - **Empty officerId silently accepted** [useCashOut.ts] — `user?.staffId || ''` falls back to empty string. Pre-existing Cash In pattern from Story 3.1.
 - **No keyboard accessibility for search** [CashOutScreen.tsx] — No Enter key handler on account input. Pre-existing Cash In pattern from Story 3.1.
 
-## Deferred from: code review of 4-2-group-loan-repayment (2026-05-06)
-
-- **Type guard relies on duck-typing** [LoanCard.tsx] — `isGroupLoan` checks `'groupName' in loan`. If base `Loan` ever gains an optional `groupName`, this will misclassify. Current code is correct; risk is future-facing.
-- **Local state duplicates React Query responsibilities** [useGroupSearch.ts] — Manual useState for groups/isLoading/error re-implements what useQuery already provides. Technical debt; not a functional bug.
+## Deferred from: code review of 3-2-cash-out-withdrawal (2026-05-06)

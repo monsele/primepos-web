@@ -38,30 +38,28 @@ async function fetchPortfolioLoans(_officerId: string): Promise<Loan[]> {
   return [
     {
       loanNumber: 'LN-2024-001234',
-      accountNumber: '1234567890',
-      accountName: 'Johnson Chukwuemeka',
+      customerName: 'Johnson Chukwuemeka',
       product: 'Prime Loan',
-      principal: 500_000_00,
-      interest: 25_000_00,
-      totalDue: 525_000_00,
-      bookBalance: 525_000_00,
-      status: 'Active',
-      disbursementDate: '2024-01-15',
+      loanPurpose: 'Business',
+      loanAmount: 500_000_00,
+      currentBalance: 525_000_00,
+      outstandingInterest: 25_000_00,
+      startDate: '2024-01-15',
       maturityDate: '2025-01-15',
+      status: 'ACTIVE',
     },
   ]
 }
 
-async function fetchPortfolioGroups(officerId: string): Promise<Group[]> {
+async function fetchPortfolioGroups(_officerId: string): Promise<Group[]> {
   await new Promise((resolve) => setTimeout(resolve, 300))
   return [
     {
-      groupId: 'GRP-001',
+      id: 'GRP-001',
+      groupCode: 'BLS-001',
       groupName: 'Better Life Circle',
+      branchId: 'OGBA001',
       memberCount: 25,
-      totalSavings: 2_500_000,
-      officerId,
-      createdAt: '2023-06-01',
     },
   ]
 }

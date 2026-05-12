@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { LoanCard } from '../../components/LoanCard/LoanCard'
@@ -20,6 +20,7 @@ export default function GroupLoanRepaymentScreen() {
     setAmount,
     setGroup,
     handleSubmit,
+    resetForm,
   } = useGroupLoanRepayment()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -27,7 +28,9 @@ export default function GroupLoanRepaymentScreen() {
     import('../../types/group').GroupLoan | null
   >(null)
   const [isSearchingLoan, setIsSearchingLoan] = useState(false)
-  const [loanSearchError, setLoanSearchError] = useState<Error | null>(null)
+  const [loanSearchError, setLoanSearchError] = useState<string | null>(null)
+  const searchAbortRef = useRef<AbortController | null>(null)
+  const prevSelectedGroupIdRef = useRef<string | null>(null)
 
   const openGroupSelect = async () => {
     setIsModalOpen(true)
@@ -44,24 +47,38 @@ export default function GroupLoanRepaymentScreen() {
     setGroup(group)
     setGroupLoan(null)
     setLoanSearchError(null)
+    setAmount('')
+    resetForm()
   }
 
-  const onSearchLoan = async () => {
-    if (!selectedGroup) return
+  const searchGroupLoanDetails = useCallback(async (groupId: string) => {
+    if (searchAbortRef.current) {
+      searchAbortRef.current.abort()
+    }
+    searchAbortRef.current = new AbortController()
+
     setIsSearchingLoan(true)
     setLoanSearchError(null)
     try {
-      const loan = await searchGroupLoan(selectedGroup.id)
+      const loan = await searchGroupLoan(groupId)
       setGroupLoan(loan)
-    } catch (err) {
-      setLoanSearchError(
-        err instanceof Error ? err : new Error('Group loan not found')
-      )
-      setGroupLoan(null)
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name !== 'AbortError') {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load group loan'
+        setLoanSearchError(errorMessage)
+        setGroupLoan(null)
+      }
     } finally {
       setIsSearchingLoan(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (selectedGroup && prevSelectedGroupIdRef.current !== selectedGroup.id) {
+      prevSelectedGroupIdRef.current = selectedGroup.id
+      searchGroupLoanDetails(selectedGroup.id)
+    }
+  }, [selectedGroup, searchGroupLoanDetails])
 
   const onSubmit = () => {
     handleSubmit(groupLoan)
@@ -91,34 +108,19 @@ export default function GroupLoanRepaymentScreen() {
         </div>
       </div>
 
-      <div className={styles.searchRow}>
-        <div className={styles.searchInput}>
-          <Input
-            label="Loan Account Number"
-            placeholder="Enter loan number"
-            value={groupLoan?.loanNumber || ''}
-            onChange={() => {}}
-            error={loanSearchError ? 'Loan not found' : undefined}
-            disabled
-          />
+      {isSearchingLoan ? (
+        <div className={styles.searchingState} data-testid="searching-state">
+          Loading group loan details...
         </div>
-        <div className={styles.searchButton}>
-          <Button
-            onClick={onSearchLoan}
-            loading={isSearchingLoan}
-            size="small"
-            disabled={!selectedGroup}
-          >
-            SEARCH
-          </Button>
-        </div>
-      </div>
-
-      {groupLoan && (
+      ) : groupLoan ? (
         <div className={styles.loanCard}>
           <LoanCard loan={groupLoan} />
         </div>
-      )}
+      ) : selectedGroup && !isSearchingLoan && loanSearchError ? (
+        <div className={styles.errorState} data-testid="loan-error">
+          {loanSearchError}
+        </div>
+      ) : null}
 
       <div className={styles.form}>
         <Input

@@ -15,6 +15,7 @@ export const quickActions: QuickAction[] = [
   { id: 'cash-in', label: 'Cash In', subtitle: 'Receive payment', icon: '↓', targetScreen: 'cashIn' },
   { id: 'cash-out', label: 'Cash Out', subtitle: 'Disburse cash', icon: '↑', targetScreen: 'cashOut' },
   { id: 'loan-repay', label: 'Loan Repayment', subtitle: 'Post repayment', icon: '💰', targetScreen: 'loanRepayment' },
+  { id: 'group-loan-repay', label: 'Group Loan', subtitle: 'Group repayment', icon: '👥', targetScreen: 'groupLoanRepayment' },
   { id: 'new-account', label: 'New Account', subtitle: 'Open savings', icon: '✨', targetScreen: 'newAccount' },
 ]
 

@@ -10,8 +10,11 @@ import {
 import * as accountsStorage from './storage/accounts'
 import * as loansStorage from './storage/loans'
 import * as groupsStorage from './storage/groups'
+import type { Account } from '../types/account'
+import type { Loan } from '../types/loan'
+import type { Group } from '../types/group'
 
-const mockAccount = {
+const mockAccount: Account = {
   accountNumber: '1234567890',
   accountName: 'Test User',
   bookBalance: 100000,
@@ -19,7 +22,7 @@ const mockAccount = {
   branchId: 'TEST001',
 }
 
-const mockLoan: typeof import('../types/loan').Loan = {
+const mockLoan: Loan = {
   loanNumber: 'LN-001',
   customerName: 'Test User',
   product: 'Test Loan Product',
@@ -32,7 +35,7 @@ const mockLoan: typeof import('../types/loan').Loan = {
   status: 'ACTIVE',
 }
 
-const mockGroup: typeof import('../types/group').Group = {
+const mockGroup: Group = {
   id: 'GRP-001',
   groupCode: 'GRP001',
   groupName: 'Test Group',

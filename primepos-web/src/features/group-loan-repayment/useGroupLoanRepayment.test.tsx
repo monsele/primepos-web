@@ -134,7 +134,7 @@ describe('useGroupLoanRepayment', () => {
       await result.current.handleSubmit(mockLoan)
     })
 
-    expect(result.current.errors.amount).toBe('Amount must be greater than 0')
+    expect(result.current.errors.amount).toBe('Enter a valid amount')
   })
 
   it('validates non-numeric amount', async () => {

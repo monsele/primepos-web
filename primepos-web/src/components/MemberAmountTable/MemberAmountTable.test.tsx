@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
+import { describe, it, expect, vi } from 'vitest'
 import MemberAmountTable from './MemberAmountTable'
-import type { GroupMember } from '../../../types/group'
+import type { GroupMember } from '../../types/group'
 
 function TestWrapper({ initialMembers }: { initialMembers: GroupMember[] }) {
   const [members, setMembers] = useState(initialMembers)

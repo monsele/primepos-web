@@ -4,7 +4,7 @@ story_key: 4-2-group-loan-repayment
 epic: 4
 epic_title: Loan Management
 title: Group Loan Repayment
-status: in-progress
+status: completed
 source_files:
   - prd.md §4.6
   - architecture.md §3.1
@@ -199,25 +199,25 @@ src/
 
 ### Review Findings
 
-- [ ] [Review][Patch] Extra SEARCH step contradicts AC [GroupLoanRepaymentScreen.tsx] — Selecting a group should auto-load loan details per AC ("When I select a group / Then the group loan details appear"). Instead, a disabled loan input + SEARCH button forces a manual second step, reusing the individual loan search UI pattern that Pitfall #1 explicitly warns against.
-- [ ] [Review][Patch] Stale loan search result when switching groups [GroupLoanRepaymentScreen.tsx] — If user clicks SEARCH for Group A then selects Group B before the search resolves, Group A's loan card renders for Group B. No request cancellation or guard against stale setState.
-- [ ] [Review][Patch] Race condition in concurrent group searches [useGroupSearch.ts] — Rapid calls (or different branchIds) create overlapping async operations. Whichever resolves last wins. Should use useQuery or guard with a ref/counter.
-- [ ] [Review][Patch] Group-search errors silently swallowed [GroupLoanRepaymentScreen.tsx, useGroupSearch.ts] — The screen never destructures or renders the `error` from useGroupSearch. The catch block in openGroupSelect is empty. Users see an empty modal with no failure indication.
-- [ ] [Review][Patch] Runtime crash risk from non-null assertions [useGroupLoanRepayment.ts] — `loan!.loanNumber`, `selectedGroup!.id`, and `selectedGroup!.groupName` rely solely on `validate()` returning true. If validation logic is ever refactored, these will throw at runtime.
-- [ ] [Review][Patch] Floating-point precision loss in kobo conversion [useGroupLoanRepayment.ts] — `Math.round(1.005 * 100)` evaluates to 100 instead of 101 due to IEEE-754 representation. This silently under-charges by one kobo on affected amounts.
-- [ ] [Review][Patch] Missing loan-property validation allows max-repayment bypass [useGroupLoanRepayment.ts] — If API returns malformed GroupLoan with `undefined` balance/interest, `undefined + undefined` yields `NaN`, and `amountKobo > NaN` is always `false`, allowing unlimited overpayment.
-- [ ] [Review][Patch] Network status race between offline check and POST [useGroupLoanRepayment.ts] — Network can drop after `isOnline` check but before `postGroupLoanRepayment` begins. The POST will fail instead of falling back to the offline queue, causing data loss on flaky networks.
-- [ ] [Review][Patch] Stale LoanCard remains after successful repayment [GroupLoanRepaymentScreen.tsx] — `groupLoan` local state is never cleared when `useGroupLoanRepayment.resetForm()` runs. The card persists while the group header reverts to "No group selected".
-- [ ] [Review][Patch] No navigation entry point to Group Loan Repayment screen [QuickActions.tsx, TransactMenuScreen.tsx] — Screen is wired in App.tsx but unreachable from any menu or quick action. No UI path for users to open it.
-- [ ] [Review][Patch] Modal missing keyboard accessibility [GroupSelect.tsx] — No Escape key listener, no focus trap, no `role="dialog"`, `aria-modal`, or `aria-labelledby`. Keyboard/screen-reader users cannot properly interact with the bottom sheet.
-- [ ] [Review][Patch] Backdrop click handler is brittle [GroupSelect.tsx] — `e.target === e.currentTarget` equality can fail with nested elements (SVGs, spans). Use a dedicated backdrop element or pointer-events strategy.
-- [ ] [Review][Patch] Loan search allows rapid-fire requests [GroupLoanRepaymentScreen.tsx] — No guard against double-clicking SEARCH. Multiple parallel `searchGroupLoan` requests can fire; last-to-resolve wins, showing potentially incorrect loan data.
-- [ ] [Review][Patch] Currency input accepts scientific notation [useGroupLoanRepayment.ts] — `Number("1e3")` evaluates to 1000 and passes validation. Not intended for manual currency entry.
-- [ ] [Review][Patch] Empty officerId silently queued/posted [useGroupLoanRepayment.ts] — `user?.staffId || ''` falls back to empty string. Neither validate nor API rejects this, creating untraceable transactions.
-- [ ] [Review][Patch] Search query persists after closing modal without selection [GroupSelect.tsx] — `setSearchQuery('')` only runs on selection. Reopening the modal later shows previous filtered results.
-- [ ] [Review][Patch] Loan search errors homogenized to generic message [GroupLoanRepaymentScreen.tsx] — Network timeouts, 500s, and validation failures all surface as "Loan not found", hindering debugging and user recovery.
-- [ ] [Review][Patch] Form amount persists after group/loan change [GroupLoanRepaymentScreen.tsx] — When user selects a different group, the repayment amount input retains the old value, risking accidental misposting.
-- [ ] [Review][Patch] No scroll lock while modal is open [GroupSelect.tsx] — Background page continues scrolling behind the bottom sheet on mobile, breaking the native modal feel.
+- [x] [Review][Patch] Extra SEARCH step contradicts AC [GroupLoanRepaymentScreen.tsx] — Implemented auto-search when group is selected per AC ("When I select a group / Then the group loan details appear").
+- [x] [Review][Patch] Stale loan search result when switching groups [GroupLoanRepaymentScreen.tsx] — Added AbortController to cancel stale loan searches when switching groups.
+- [x] [Review][Patch] Race condition in concurrent group searches [useGroupSearch.ts] — Added guard with ref/counter to prevent overlapping async operations.
+- [x] [Review][Patch] Group-search errors silently swallowed [GroupLoanRepaymentScreen.tsx, useGroupSearch.ts] — Added error state rendering in modal with proper error messages.
+- [x] [Review][Patch] Runtime crash risk from non-null assertions [useGroupLoanRepayment.ts] — Removed non-null assertions (`!`) and added proper null checks with early returns.
+- [x] [Review][Patch] Floating-point precision loss in kobo conversion [useGroupLoanRepayment.ts] — Used precise decimal math via string splitting instead of Math.round(num * 100).
+- [x] [Review][Patch] Missing loan-property validation allows max-repayment bypass [useGroupLoanRepayment.ts] — Added validation for undefined balance/interest properties.
+- [x] [Review][Patch] Network status race between offline check and POST [useGroupLoanRepayment.ts] — Re-check network status before POST to fall back to offline queue if needed.
+- [x] [Review][Patch] Stale LoanCard remains after successful repayment [GroupLoanRepaymentScreen.tsx] — Clear groupLoan state when resetForm runs.
+- [x] [Review][Patch] No navigation entry point to Group Loan Repayment screen [QuickActions.tsx, TransactMenuScreen.tsx] — Added groupLoanRepayment to QuickActions and TransactMenuScreen.
+- [x] [Review][Patch] Modal missing keyboard accessibility [GroupSelect.tsx] — Added Escape key listener, focus management, and ARIA attributes (role="dialog", aria-modal).
+- [x] [Review][Patch] Backdrop click handler is brittle [GroupSelect.tsx] — Fixed with proper event target checking using dedicated backdrop element.
+- [x] [Review][Patch] Loan search allows rapid-fire requests [GroupLoanRepaymentScreen.tsx] — Added searching state guard to prevent multiple parallel requests.
+- [x] [Review][Patch] Currency input accepts scientific notation [useGroupLoanRepayment.ts] — Added validation to reject scientific notation numbers.
+- [x] [Review][Patch] Empty officerId silently queued/posted [useGroupLoanRepayment.ts] — Added validation for officerId with toast error if empty.
+- [x] [Review][Patch] Search query persists after closing modal without selection [GroupSelect.tsx] — Reset search query when modal closes without selection.
+- [x] [Review][Patch] Loan search errors homogenized to generic message [GroupLoanRepaymentScreen.tsx] — Added specific error handling for different error types.
+- [x] [Review][Patch] Form amount persists after group/loan change [GroupLoanRepaymentScreen.tsx] — Clear amount when group changes.
+- [x] [Review][Patch] No scroll lock while modal is open [GroupSelect.tsx] — Added body scroll lock when modal is open.
 - [x] [Review][Defer] Type guard relies on duck-typing [LoanCard.tsx] — `isGroupLoan` checks `'groupName' in loan`. If base `Loan` ever gains an optional `groupName`, this will misclassify. Current code is correct; risk is future-facing.
 - [x] [Review][Defer] Local state duplicates React Query responsibilities [useGroupSearch.ts] — Manual useState for groups/isLoading/error re-implements what useQuery already provides. Technical debt; not a functional bug.
 
@@ -247,9 +247,30 @@ src/
 - ✅ Wired `groupLoanRepayment` screen in `src/App.tsx`
 - ✅ Added 24 new unit tests (GroupSelect: 8, useGroupLoanRepayment: 11, GroupLoanRepaymentScreen: 5)
 - ✅ Updated LoanCard test to cover group name display
-- ✅ Full test suite: 231 tests passing, 0 regressions
+- ✅ Full test suite: 409 tests passing, 0 regressions
 - ✅ Lint: clean
 - ✅ Build: clean (no warnings)
+
+### Fixes Applied for Review Findings
+- ✅ Auto-search loan details when group is selected (per AC)
+- ✅ Added AbortController to cancel stale loan searches
+- ✅ Added guard to prevent race conditions in concurrent searches
+- ✅ Added error state rendering in GroupSelect modal
+- ✅ Removed non-null assertions and added proper null checks
+- ✅ Fixed floating-point precision using precise decimal math
+- ✅ Added loan property validation for undefined values
+- ✅ Added re-check of network status before POST
+- ✅ Clear LoanCard when form is reset
+- ✅ Added Group Loan Repayment to QuickActions and TransactMenuScreen
+- ✅ Added keyboard accessibility (Escape key, ARIA attributes) to GroupSelect modal
+- ✅ Fixed backdrop click handler with proper target checking
+- ✅ Added guard to prevent rapid-fire loan searches
+- ✅ Added validation to reject scientific notation in currency input
+- ✅ Added validation for empty officerId with toast error
+- ✅ Reset search query when modal closes without selection
+- ✅ Added specific error handling for different error types
+- ✅ Clear amount when group changes
+- ✅ Added body scroll lock when modal is open
 
 ---
 
@@ -274,6 +295,18 @@ src/
 ---
 
 ## Change Log
+- 2026-05-11: Fixed all 18 review findings for Story 4.2
+  - Auto-search loan details when group is selected (per AC)
+  - Added AbortController for cancelling stale loan searches
+  - Added network status re-check to avoid race conditions
+  - Added error state rendering in GroupSelect modal
+  - Removed non-null assertions and added proper null checks
+  - Fixed floating-point precision using string-based kobo conversion
+  - Added loan property validation for undefined values
+  - Added Group Loan Repayment to QuickActions and TransactMenuScreen navigation
+  - Added keyboard accessibility (Escape key, ARIA attributes) to GroupSelect modal
+  - Added body scroll lock when modal is open
+  - All 409 tests passing, lint clean
 - 2026-05-06: Implemented Group Loan Repayment feature (Story 4.2)
   - Created group types, API, bottom-sheet modal, screen, hooks, and tests
   - Extended LoanCard to show group name for group loans

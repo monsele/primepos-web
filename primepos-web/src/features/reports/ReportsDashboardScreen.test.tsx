@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
+import { describe, beforeEach, it, expect, vi } from 'vitest'
 import { ReportsDashboardScreen } from './ReportsDashboardScreen'
-import { vi } from 'vitest'
 
 // Mock the hooks
 vi.mock('./useReportsSummary', () => ({
@@ -31,6 +31,9 @@ describe('ReportsDashboardScreen', () => {
       currentScreen: 'reports',
       screenHistory: [],
       transitionDirection: 'none',
+      goBack: vi.fn(),
+      replace: vi.fn(),
+      isInnerScreen: false,
     })
   })
 

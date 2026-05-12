@@ -1,7 +1,9 @@
 import { renderHook } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { describe, it, expect, vi } from 'vitest'
 import { useReportsSummary } from './useReportsSummary'
-import { vi } from 'vitest'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { DashboardKPIs } from '../dashboard/useDashboardKPIs'
 
 // Mock the dashboard hook
 vi.mock('../dashboard/useDashboardKPIs', () => ({
@@ -35,7 +37,7 @@ describe('useReportsSummary', () => {
       },
       isLoading: false,
       error: null,
-    })
+    } as unknown as UseQueryResult<DashboardKPIs, Error>)
 
     const { result } = renderHook(() => useReportsSummary(), {
       wrapper: createWrapper(),
@@ -52,7 +54,7 @@ describe('useReportsSummary', () => {
       data: undefined,
       isLoading: true,
       error: null,
-    })
+    } as unknown as UseQueryResult<DashboardKPIs, Error>)
 
     const { result } = renderHook(() => useReportsSummary(), {
       wrapper: createWrapper(),

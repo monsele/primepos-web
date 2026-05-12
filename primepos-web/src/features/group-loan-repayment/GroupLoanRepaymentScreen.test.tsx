@@ -143,7 +143,7 @@ describe('GroupLoanRepaymentScreen', () => {
     expect(screen.getByText('Alpha Group')).toBeInTheDocument()
   })
 
-  it('shows loan card after loan search', async () => {
+  it('shows loan card after loan search when group is selected', async () => {
     vi.mocked(useAuth).mockReturnValue({ user: { staffId: 'OFF001', branchId: 'B1' } } as unknown as ReturnType<typeof useAuth>)
     vi.mocked(useGroupSearch).mockReturnValue({
       groups: [],
@@ -152,7 +152,7 @@ describe('GroupLoanRepaymentScreen', () => {
       search: vi.fn(),
     })
     vi.mocked(useGroupLoanRepayment).mockReturnValue({
-      form: { amount: '1000' },
+      form: { amount: '' },
       errors: {},
       isSubmitting: false,
       selectedGroup: mockGroups[0],
@@ -165,11 +165,10 @@ describe('GroupLoanRepaymentScreen', () => {
 
     render(<GroupLoanRepaymentScreen />, { wrapper: Wrapper })
 
-    // The loan card won't show until search is triggered, but since we're mocking
-    // the internal state and the hook, we need to test the interaction path.
-    // Instead, let's verify the SEARCH button exists and is enabled when group is selected.
-    const searchBtn = screen.getByText('SEARCH')
-    expect(searchBtn).not.toBeDisabled()
+    // Wait for auto-search to complete when group is selected
+    await waitFor(() => {
+      expect(screen.getByTestId('loan-card')).toBeInTheDocument()
+    })
   })
 
   it('triggers repayment after loan search and form fill', async () => {
@@ -195,10 +194,7 @@ describe('GroupLoanRepaymentScreen', () => {
 
     render(<GroupLoanRepaymentScreen />, { wrapper: Wrapper })
 
-    // First trigger loan search to enable the post button
-    const searchBtn = screen.getByText('SEARCH')
-    fireEvent.click(searchBtn)
-
+    // Wait for auto-search and loan card to appear
     await waitFor(() => {
       expect(screen.getByTestId('loan-card')).toBeInTheDocument()
     })

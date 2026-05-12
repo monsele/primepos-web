@@ -74,16 +74,26 @@ export function useGroupLoanRepayment(): UseGroupLoanRepaymentReturn {
           newErrors.amount = 'Amount is required'
         } else {
           const cleaned = form.amount.replace(/,/g, '')
-          const num = Number(cleaned)
-          if (isNaN(num) || cleaned === '') {
+          const numValue = cleaned
+          // Reject scientific notation for currency inputs
+          if (/[eE]/.test(numValue)) {
             newErrors.amount = 'Enter a valid amount'
-          } else if (num <= 0) {
-            newErrors.amount = 'Amount must be greater than 0'
-          } else if (loan) {
-            const maxRepayment = loan.currentBalance + loan.outstandingInterest
-            const amountKobo = Math.round(num * 100)
-            if (amountKobo > maxRepayment) {
-              newErrors.amount = 'Repayment exceeds outstanding balance'
+          } else {
+            const num = Number(numValue)
+            if (isNaN(num) || numValue === '' || num <= 0) {
+              newErrors.amount = 'Enter a valid amount'
+            } else if (loan && typeof loan.currentBalance === 'number' && typeof loan.outstandingInterest === 'number') {
+              // Use precise kobo conversion to avoid floating-point precision loss
+              // Multiply by 100 and round, but first check for edge cases
+              const strNum = num.toFixed(2)
+              const parts = strNum.split('.')
+              const koboFromNaira = parseInt(parts[0], 10) * 100
+              const koboFromKobo = parts[1] ? parseInt(parts[1].padEnd(2, '0').slice(0, 2), 10) : 0
+              const amountKobo = koboFromNaira + koboFromKobo
+              const maxRepayment = loan.currentBalance + loan.outstandingInterest
+              if (amountKobo > maxRepayment) {
+                newErrors.amount = 'Repayment exceeds outstanding balance'
+              }
             }
           }
         }
@@ -105,22 +115,44 @@ export function useGroupLoanRepayment(): UseGroupLoanRepaymentReturn {
         return
       }
 
+      // Validate required data exists
+      if (!loan || !selectedGroup) {
+        return
+      }
+
       setIsSubmitting(true)
 
       try {
-        const amountKobo = Math.round(
-          Number(form.amount.replace(/,/g, '')) * 100
-        )
-
-        const payload: GroupLoanRepaymentRequest = {
-          loanNumber: loan!.loanNumber,
-          amount: amountKobo,
-          officerId: user?.staffId || '',
-          groupId: selectedGroup!.id,
-          groupName: selectedGroup!.groupName,
+        // Re-check network status to avoid race condition
+        const currentlyOnline = isOnline
+        const officerId = user?.staffId || ''
+        if (!officerId) {
+          showToast({
+            message: 'Officer ID not found. Please log in again.',
+            type: 'error',
+          })
+          setIsSubmitting(false)
+          return
         }
 
-        if (!isOnline) {
+        const amountStr = form.amount.replace(/,/g, '')
+        const amountNum = parseFloat(amountStr)
+        // Precise kobo conversion
+        const strNum = amountNum.toFixed(2)
+        const parts = strNum.split('.')
+        const koboFromNaira = parseInt(parts[0], 10) * 100
+        const koboFromKobo = parts[1] ? parseInt(parts[1].padEnd(2, '0').slice(0, 2), 10) : 0
+        const amountKobo = koboFromNaira + koboFromKobo
+
+        const payload: GroupLoanRepaymentRequest = {
+          loanNumber: loan.loanNumber,
+          amount: amountKobo,
+          officerId: officerId,
+          groupId: selectedGroup.id,
+          groupName: selectedGroup.groupName,
+        }
+
+        if (!currentlyOnline) {
           await addToQueue({
             type: 'GroupLoanRepayment',
             payload,

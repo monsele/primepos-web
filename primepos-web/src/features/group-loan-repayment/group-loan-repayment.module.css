@@ -59,6 +59,23 @@
   flex-shrink: 0;
 }
 
+.searchingState {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.errorState {
+  padding: 1rem;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+}
+
 .loanCard {
   margin-top: 0.25rem;
 }
